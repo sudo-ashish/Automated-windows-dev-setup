@@ -1,7 +1,0 @@
-new this to update, make sure of orientation so it does not break any dependencie too:
-1. ask user their email id and ther name to set github identity: and the run this this  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
-2. update for ssh setup their also ask user name then run this ssh-keygen -t ed25519 -C "youremail@email.com" and replace email to installScript
-3. add google's anitgravity text editor settings.json and extensions form ./anitgravity-bak/ folder like vscodium and add it under the codium config
-4. add script to install "winget install GitHub.cli" by getting permision and then run gh auth login
-for ssh to set up on github : before running all of this prompt user that he need browser and github setup to get it all done
