@@ -1,0 +1,5 @@
+beardedbear.beardedtheme
+ms-toolsai.jupyter
+ms-vscode.live-server
+pkief.material-product-icons
+ms-python.python
