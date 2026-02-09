@@ -117,6 +117,83 @@ if (Show-Prompt "1b. Setup GitHub CLI" "Install GitHub CLI and authenticate") {
     }
 }
 
+# 1c. Clone Repositories
+# 1c. Clone Repositories
+if (Show-Prompt "1c. Clone Repositories" "Clone selected repositories to Projects folder") {
+    Write-Host "`n[Step 1c] Cloning Repositories..." -ForegroundColor Green
+    
+    # Configuration
+    $projectsDir = "$env:USERPROFILE\Projects"
+    $reposFile = "$scriptDir\repos.txt"
+    
+    # Ensure Projects directory exists
+    if (-not (Test-Path $projectsDir)) {
+        New-Item -ItemType Directory -Path $projectsDir -Force | Out-Null
+        Write-Host "Created Projects directory at $projectsDir"
+    }
+    
+    $repoList = @()
+    
+    # Strategy: Read from file OR Interactive Selection
+    if (Test-Path $reposFile) {
+        Write-Host "Reading repository list from $reposFile..."
+        $repoList = Get-Content $reposFile | Where-Object { -not [string]::IsNullOrWhiteSpace($_) -and -not $_.StartsWith("#") }
+    }
+    else {
+        Write-Host "No repos.txt found. Fetching list from GitHub..."
+        if (Get-Command "gh" -ErrorAction SilentlyContinue) {
+            # Fetch up to 50 repos
+            # Using --json sshUrl,name,description ensures we get valid clone URLs
+            $ghReposJson = gh repo list --limit 50 --json sshUrl, name, description | ConvertFrom-Json
+            
+            if ($ghReposJson) {
+                # Interactive selection using Out-GridView
+                # PassThru returns the selected objects
+                $selected = $ghReposJson | Out-GridView -Title "Select Repositories to Clone (Hold Ctrl/Shift to multi-select)" -PassThru
+                if ($selected) {
+                    $repoList = $selected.sshUrl
+                }
+            }
+            else {
+                Write-Warning "No repositories found or not authenticated."
+            }
+        }
+        else {
+            Write-Warning "GitHub CLI (gh) not found. Skipping interactive selection."
+        }
+    }
+    
+    # Process Cloning
+    if ($repoList.Count -gt 0) {
+        foreach ($repoUrl in $repoList) {
+            $repoUrl = $repoUrl.Trim()
+            if ([string]::IsNullOrWhiteSpace($repoUrl)) { continue }
+
+            # Extract repo name for folder creation
+            # Handle git@github.com:owner/repo.git OR https://github.com/owner/repo
+            $repoName = ($repoUrl -split "/")[-1] -replace "\.git$", ""
+            
+            $targetPath = Join-Path $projectsDir $repoName
+            
+            if (-not (Test-Path $targetPath)) {
+                Write-Host "Cloning $repoName..."
+                try {
+                    gh repo clone $repoUrl $targetPath
+                }
+                catch {
+                    Write-Error "Failed to clone $repoName : $_"
+                }
+            }
+            else {
+                Write-Host "Skipping $repoName (already exists at $targetPath)" -ForegroundColor DarkGray
+            }
+        }
+    }
+    else {
+        Write-Host "No repositories selected or found to clone."
+    }
+}
+
 # 2. Install JetBrainsMono Nerd Font
 if (Show-Prompt "2. Install Fonts" "Install JetBrainsMono Nerd Font") {
     Write-Host "`n[Step 2] Installing JetBrainsMono Nerd Font..." -ForegroundColor Green
@@ -152,35 +229,37 @@ if (Show-Prompt "2. Install Fonts" "Install JetBrainsMono Nerd Font") {
 
 
 # 3. Install VSCodium Extensions
-Write-Host "`n[Step 3] Installing VSCodium extensions..." -ForegroundColor Green
-$extensionsFile = "$scriptDir\text-editor\vscodium-extensions.txt"
-if (Test-Path $extensionsFile) {
-    # Check if codium is available, try to find it explicitly if not in path yet
-    if (-not (Get-Command "codium" -ErrorAction SilentlyContinue)) {
-        Update-SessionEnvironment
-    }
-    
-    if (Get-Command "codium" -ErrorAction SilentlyContinue) {
-        Get-Content $extensionsFile | ForEach-Object {
-            $ext = $_.Trim()
-            if (-not [string]::IsNullOrWhiteSpace($ext)) {
-                Write-Host "Installing extension: $ext"
-                cmd /c "codium --install-extension $ext"
+if (Show-Prompt "3. VSCodium Extensions" "Install VSCodium extensions") {
+    Write-Host "`n[Step 3] Installing VSCodium extensions..." -ForegroundColor Green
+    $extensionsFile = "$scriptDir\text-editor\vscodium-extensions.txt"
+    if (Test-Path $extensionsFile) {
+        # Check if codium is available, try to find it explicitly if not in path yet
+        if (-not (Get-Command "codium" -ErrorAction SilentlyContinue)) {
+            Update-SessionEnvironment
+        }
+        
+        if (Get-Command "codium" -ErrorAction SilentlyContinue) {
+            Get-Content $extensionsFile | ForEach-Object {
+                $ext = $_.Trim()
+                if (-not [string]::IsNullOrWhiteSpace($ext)) {
+                    Write-Host "Installing extension: $ext"
+                    cmd /c "codium --install-extension $ext"
+                }
             }
+        }
+        else {
+            Write-Warning "codium command not found. Ensure VSCodium is installed and added to PATH."
         }
     }
     else {
-        Write-Warning "codium command not found. Ensure VSCodium is installed and added to PATH."
+        Write-Warning "Extensions file not found at $extensionsFile"
     }
-}
-else {
-    Write-Warning "Extensions file not found at $extensionsFile"
 }
 
 # 4. Configure VSCodium Settings
 if (Show-Prompt "4. VSCodium Settings" "Copy settings.json to VSCodium user directory") {
     Write-Host "`n[Step 4] Configuring VSCodium settings..." -ForegroundColor Green
-    $vscodeSettingsSrc = "$scriptDir\text-editor\settings.json"
+    $vscodeSettingsSrc = "$scriptDir\codium-bak\settings.json"
     $vscodeSettingsDestDir = "$env:APPDATA\VSCodium\User"
     $vscodeSettingsDest = "$vscodeSettingsDestDir\settings.json"
 
@@ -356,5 +435,3 @@ if (Show-Prompt "9. Neovim Config" "Copy Neovim configuration") {
 # 11. Final Instructions
 Write-Host "`n[Step 11] Setup actions complete." -ForegroundColor Cyan
 Write-Host "IMPORTANT: Please restart your computer now to ensure all changes (fonts, path updates) take effect." -ForegroundColor Yellow
-Write-Host "After restart, run the following command in PowerShell to run Chris Titus Tech's Utility:" -ForegroundColor Yellow
-Write-Host "irm https://christitus.com/win | iex" -ForegroundColor White

@@ -2,5 +2,6 @@ beardedbear.beardedtheme
 formulahendry.code-runner
 ms-toolsai.jupyter
 ms-vscode.live-server
+pkief.material-icon-theme
 pkief.material-product-icons
 ms-python.python

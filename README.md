@@ -8,12 +8,17 @@ This repository contains scripts and configuration files to quickly bootstrap a 
 
 ## Features
 
--   **Automated Software Installation**: Uses Winget (via `InstallScript.ps1`) to install core tools like VSCodium, Git, Python, Node.js, and more.
+-   **Automated Software Installation**: Uses Winget (via `InstallScript.ps1`) to install core tools.
+-   **Git & GitHub**: Configures identity, installs GitHub CLI, and authenticates.
+-   **Repo Cloning**: Interactive menu or file-based (`repos.txt`) cloning of GitHub repositories to `~/Projects`.
 -   **Font Setup**: Downloads and installs JetBrainsMono Nerd Font.
--   **VSCodium Configuration**: Installs extensions and syncs `settings.json`.
--   **Windows Terminal**: Configures terminal profile and settings.
--   **Shell Customization**: Sets up PowerShell with Starship prompt (`gruvbox-rainbow` preset).
--   **Neovim**: Deploys a pre-configured Neovim setup.
+-   **Editor Configuration**: 
+    -   **VSCodium**: Installs extensions and syncs settings.
+    -   **Antigravity**: Installs extensions and syncs settings.
+    -   **Neovim**: Deploys a pre-configured Neovim setup.
+-   **Shell Customization**:
+    -   **Windows Terminal**: Configures terminal profile and settings.
+    -   **Starship**: Sets up PowerShell with Starship prompt (`gruvbox-rainbow` preset).
 -   **SSH**: Generates an ED25519 SSH key and configures the ssh-agent.
 
 ## Prerequisites
@@ -21,6 +26,7 @@ This repository contains scripts and configuration files to quickly bootstrap a 
 -   Windows 10 or 11.
 -   PowerShell (run as **Administrator**).
 -   Internet connection.
+-   (Optional) `repos.txt`: A file with one repository URL per line for automated cloning.
 
 ## Usage
 
@@ -33,25 +39,20 @@ This repository contains scripts and configuration files to quickly bootstrap a 
     ```powershell
     .\setup_dev_env.ps1
     ```
-4.  Follow the interactive prompts. You can choose to proceed with or skip each step:
-    -   Type `Y` and press Enter to run a step.
-    -   Press Enter (or type `N`) to skip a step.
+4.  Follow the interactive prompts:
+    -   **Step 1c (Repo Cloning)**: If `repos.txt` exists, it clones those repos. Otherwise, it presents a numbered menu of your GitHub repositories to choose from.
+    -   **Other Steps**: Type `Y` to proceed or `N` to skip.
 
 ## Post-Installation
 
 1.  **Restart your computer** to ensure all changes (especially fonts and path updates) take effect.
-2.  After restarting, run the Chris Titus Tech Windows Utility (as suggested by the script):
-    ```powershell
-    irm https://christitus.com/win | iex
-    ```
 
 ## Directory Structure
 
 -   `setup_dev_env.ps1`: The main interactive setup script.
--   `InstallScript.ps1`: Helper script for bulk software installation via Winget.
--   `text-editor/`:
-    -   `settings.json`: VSCodium user settings.
-    -   `vscodium-extensions.txt`: List of VSCodium extensions to install.
--   `terminal/`:
-    -   `settings.json`: Windows Terminal configuration.
+-   `InstallScript.ps1`: Bulk software installation via Winget.
+-   `repos.txt`: (Optional) List of repositories to clone.
+-   `text-editor/`: VSCodium settings and extensions list.
+-   `antigravity-bak/`: Antigravity editor settings and extensions list.
+-   `terminal/`: Windows Terminal configuration.
 -   `nvim/`: Neovim configuration files.
