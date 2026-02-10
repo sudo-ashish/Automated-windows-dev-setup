@@ -40,10 +40,20 @@ Before running the script, you must configure PowerShell to allow script executi
 
 Once started, you will see a menu:
 
--   **1-10**: Select individual steps to run specific tasks (e.g., '3' for Fonts, '8' for Terminal). 
-    - You can select multiple steps by entering comma-separated numbers (e.g., `3,5,8`).
+-   **1-10**: Select individual steps to run specific tasks.
+    -   **2a**: Setup Git Config (Name/Email)
+    -   **2b**: Install Tools (GitHub CLI, FZF) & Login
+    -   **2c**: Clone Repositories (Interactive FZF selection - Use TAB to multi-select)
+    -   You can select multiple steps by entering comma-separated numbers (e.g., `2b,2c,8`).
 -   **A**: Execute All (Recommended for fresh installs). automating the entire process.
 -   **Q**: Quit.
+
+## New Features
+
+- **GitHub Integration**: Step 2 is now split for better control.
+  - **Dynamic User**: Fetches your GitHub username automatically.
+  - **FZF Support**: Uses `fzf` for interactive repository selection.
+- **Bug Fixes**: Improved handling of `.config` directory creation and admin privileges for Step 1.
 
 ## Project Structure
 
