@@ -53,21 +53,46 @@ function Test-Admin {
 
 function Run-Step1 {
     Write-Host "`n[Step 1] Running InstallScript.ps1..." -ForegroundColor Green
-    
-    # Requirement: Enforce Non-Admin
-    if (Test-Admin) {
-        Write-Error "[Step 1] This step MUST be run in a non-admin terminal. Please restart the script without admin privileges or open a new non-admin terminal."
-        return
-    }
-
     $installScript = Join-Path $ScriptDir "InstallScript.ps1"
+    
     if (Test-Path $installScript) {
-        try {
-            & $installScript
-            Write-Host "[Step 1] Completed." -ForegroundColor Green
+        if (Test-Admin) {
+            Write-Warning "Running as Administrator. Auto-launching Step 1 in a Non-Admin window..."
+            
+            # De-elevate by using explorer.exe to launch a temporary batch file
+            # Explorer runs as the logged-in user (Non-Admin).
+            
+            $tempBatch = Join-Path $env:TEMP ("InstallStep1_" + [Guid]::NewGuid() + ".bat")
+            # Batch command to run powershell script and pause so user can see output
+            $cmd = "@echo off`r`npowershell -NoProfile -ExecutionPolicy Bypass -File `"$installScript`"`r`npause"
+            Set-Content -Path $tempBatch -Value $cmd
+            
+            try {
+                Start-Process "explorer.exe" -ArgumentList "`"$tempBatch`""
+                
+                Write-Host "Step 1 launched in a new window." -ForegroundColor Yellow
+                Write-Host "Please wait for the new window to complete its task." -ForegroundColor Yellow
+                Read-Host "Press Enter HERE once Step 1 is finished to continue..."
+            }
+            catch {
+                Write-Host "Failed to launch non-admin process: $_" -ForegroundColor Red
+            }
+            finally {
+                # Clean up batch file (might need a small delay if explorer is slow to pick it up, but usually finr)
+                # We defer deletion slightly or just leave it for temp cleanup? 
+                # Better to delete after Read-Host, so it's definitely run.
+                if (Test-Path $tempBatch) { Remove-Item $tempBatch -ErrorAction SilentlyContinue }
+            }
         }
-        catch {
-            Write-Host "[Step 1] Failed: $_" -ForegroundColor Red
+        else {
+            # Already Non-Admin, run directly
+            try {
+                & $installScript
+                Write-Host "[Step 1] Completed." -ForegroundColor Green
+            }
+            catch {
+                Write-Host "[Step 1] Failed: $_" -ForegroundColor Red
+            }
         }
     }
     else {
@@ -542,16 +567,8 @@ while ($true) {
     
     # Requirement: "Step 1 ... execute it on a no admin terminal"
     if ($runStep1) {
-        if (Test-Admin) {
-            Write-Warning "Current session is Administrator. Step 1 requires Non-Admin."
-            Write-Warning "Please restart script without Admin privileges for Step 1."
-            # We skip running it to enforce safety, as requested to "force" it.
-            # But the user might want a choice? Plan said Enforce.
-            Start-Sleep -Seconds 2
-        }
-        else {
-            Run-Step1
-        }
+        # Run-Step1 now handles the de-elevation logic gracefully
+        Run-Step1
     }
     
     # Run remaining steps if any
