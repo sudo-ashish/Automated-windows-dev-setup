@@ -1,8 +1,13 @@
-# ==============================
-# Import Windows User Settings
-# ==============================
+<#
+.SYNOPSIS
+    Import-Settings
+.DESCRIPTION
+    Restores Windows User Settings from the 'system-backup' folder.
+    WARNING: Overwrites current registry settings.
+#>
 
-$backupDir = "$HOME\Documents\project\Automated-windows-dev-setup\system-backup"
+
+$backupDir = Join-Path $PSScriptRoot "system-backup"
 
 if (!(Test-Path $backupDir)) {
     Write-Host "Backup folder not found." -ForegroundColor Red
@@ -26,9 +31,9 @@ Get-ChildItem "$backupDir\*.reg" | ForEach-Object {
 if (Test-Path "$backupDir\powershell-profile.ps1") {
 
     Copy-Item `
-     "$backupDir\powershell-profile.ps1" `
-     $PROFILE `
-     -Force
+        "$backupDir\powershell-profile.ps1" `
+        $PROFILE `
+        -Force
 }
 
 # ------------------------------
