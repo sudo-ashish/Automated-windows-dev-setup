@@ -2,7 +2,7 @@
 # Import Windows User Settings
 # ==============================
 
-$backupDir = "$HOME\Documents\Automated-windows-dev-setup\system-backup"
+$backupDir = "$HOME\Documents\project\Automated-windows-dev-setup\system-backup"
 
 if (!(Test-Path $backupDir)) {
     Write-Host "Backup folder not found." -ForegroundColor Red
