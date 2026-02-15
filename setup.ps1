@@ -320,6 +320,7 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
                                 <StackPanel>
                                     <CheckBox Name="Step2a" Content="2a. Git Config &amp; Tools (GH CLI, FZF)"/>
                                     <CheckBox Name="Step2b" Content="2b. GitHub Auth Login"/>
+                                    <CheckBox Name="Step3" Content="3. Install Selected Nerd Font"/>
                                     <CheckBox Name="Step4" Content="4. VSCodium Extensions"/>
                                     <CheckBox Name="Step5" Content="5. VSCodium Settings"/>
                                     <CheckBox Name="Step6" Content="6. Antigravity Extensions"/>
@@ -553,15 +554,31 @@ try {
                 else {
                     Log "Launching GitHub Authentication..."
                     # Check status first to inform user, but run login anyway as requested for manual config/re-auth
-                    if (gh auth status 2>&1 | Select-String "Logged in to") {
+                    $isLoggedIn = $false
+                    try {
+                        $statusCheck = gh auth status 2>&1
+                        if ($statusCheck | Select-String "Logged in to") { $isLoggedIn = $true }
+                    } catch {
+                        # Ignore error if simply not logged in
+                    }
+
+                    if ($isLoggedIn) {
                         Log "Note: You are already logged in, but launching login for re-authentication/SSH key setup."
                     }
                     
                     Start-Process "gh" -ArgumentList "auth login" -Wait
                     
                     # Verify after user closes the window
-                    $null = gh auth status 2>&1
-                    if ($LASTEXITCODE -eq 0) { 
+                    $authSuccess = $false
+                    try {
+                        $null = gh auth status 2>&1
+                        if ($LASTEXITCODE -eq 0) { $authSuccess = $true }
+                    } catch {
+                         # If it threw, it likely failed or is not logged in
+                         $authSuccess = $false
+                    }
+
+                    if ($authSuccess) { 
                         Log "GitHub: Authentication verified." 
                     }
                     else { 
@@ -733,10 +750,17 @@ try {
                 }
 
                 # 1. Check Auth
-                $null = gh auth status 2>&1
-                if ($LASTEXITCODE -ne 0) { 
-                    throw "Not logged in to GitHub. Please run 'gh auth login' in a terminal window." 
+                $authCheck = $false
+                try {
+                    $null = gh auth status 2>&1 | Out-Null
+                    if ($LASTEXITCODE -eq 0) { $authCheck = $true }
+                } catch {
+                    $authCheck = $false
                 }
+
+ 		if (-not $authCheck) { 
+    			throw "Not logged in to GitHub. Please run 'gh auth login' in a terminal window." 
+		}
 
                 # 2. Get Current User Name
                 $me = gh api user --jq .login 2>&1

@@ -23,31 +23,27 @@ Write-Host ""
 if ($args[0] -ne "/DisablePausePrompts") { pause }
 Write-Host ""
 Write-Host "This script will attempt to install the following packages:"
-Write-Host "  - Google Chrome from WinGet"
-Write-Host "  - VSCodium from WinGet"
-Write-Host "  - Wintoys from WinGet"
-Write-Host "  - Spotify from WinGet"
-Write-Host "  - Git from WinGet"
-Write-Host "  - SharpKeys from WinGet"
-Write-Host "  - OMEN Gaming Hub from WinGet"
 Write-Host "  - Brave from WinGet"
-Write-Host "  - LocalSend from WinGet"
-Write-Host "  - Neovim from WinGet"
-Write-Host "  - Node.js from WinGet"
-Write-Host "  - Zen Browser from WinGet"
-Write-Host "  - Helium from WinGet"
-Write-Host "  - starship from WinGet"
-Write-Host "  - Vim from WinGet"
-Write-Host "  - Antigravity from WinGet"
+Write-Host "  - Wintoys from WinGet"
+Write-Host "  - fastfetch from WinGet"
+Write-Host "  - VSCodium from WinGet"
 Write-Host "  - Discord from WinGet"
-Write-Host "  - Python 3.14 from WinGet"
+Write-Host "  - SharpKeys from WinGet"
+Write-Host "  - starship from WinGet"
+Write-Host "  - LocalSend from WinGet"
+Write-Host "  - Node.js from WinGet"
+Write-Host "  - Google Chrome from WinGet"
+Write-Host "  - Spotify from WinGet"
+Write-Host "  - Helium from WinGet"
+Write-Host "  - Obsidian from WinGet"
+Write-Host "  - Antigravity from WinGet"
 Write-Host "  - PowerShell from WinGet"
 Write-Host "  - PowerToys from WinGet"
-Write-Host "  - fastfetch from WinGet"
+Write-Host "  - Zen Browser from WinGet"
+Write-Host "  - Git from WinGet"
+Write-Host "  - Python 3.14 from WinGet"
 Write-Host "  - Steam from WinGet"
-Write-Host "  - VLC media player from WinGet"
-Write-Host "  - cava from WinGet"
-Write-Host "  - Obsidian from WinGet"
+Write-Host "  - Neovim from WinGet"
 Write-Host ""
 if ($args[0] -ne "/DisablePausePrompts") { pause }
 Clear-Host
@@ -58,31 +54,27 @@ $commands_run=0
 $results=""
 
 $commands= @(
-    'cmd.exe /C winget.exe install --id "Google.Chrome" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "VSCodium.VSCodium" --exact --source winget --accept-source-agreements --disable-interactivity --interactive --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "9P8LTPGCBZXD" --exact --source msstore --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Spotify.Spotify" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Git.Git" --exact --source winget --accept-source-agreements --disable-interactivity --interactive --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "RandyRants.SharpKeys" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "9NQDW009T0T5" --exact --source msstore --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "Brave.Brave" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "LocalSend.LocalSend" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Neovim.Neovim" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "OpenJS.NodeJS" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Zen-Team.Zen-Browser" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "ImputNet.Helium" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Starship.Starship" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "vim.vim" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Google.Antigravity" --exact --source winget --accept-source-agreements --disable-interactivity --interactive --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "9P8LTPGCBZXD" --exact --source msstore --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Fastfetch-cli.Fastfetch" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "VSCodium.VSCodium" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "Discord.Discord" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Python.Python.3.14" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "RandyRants.SharpKeys" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Starship.Starship" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "LocalSend.LocalSend" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "OpenJS.NodeJS" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Google.Chrome" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Spotify.Spotify" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "ImputNet.Helium" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Obsidian.Obsidian" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Google.Antigravity" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "Microsoft.PowerShell" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "Microsoft.PowerToys" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Fastfetch-cli.Fastfetch" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Zen-Team.Zen-Browser" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Git.Git" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
+    'cmd.exe /C winget.exe install --id "Python.Python.3.14" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "Valve.Steam" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "VideoLAN.VLC" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "karlstav.cava" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Obsidian.Obsidian" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force'
+    'cmd.exe /C winget.exe install --id "Neovim.Neovim" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force'
 )
 
 foreach ($command in $commands) {
