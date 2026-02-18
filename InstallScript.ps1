@@ -29,7 +29,6 @@ Write-Host "  - fastfetch from WinGet"
 Write-Host "  - VSCodium from WinGet"
 Write-Host "  - Discord from WinGet"
 Write-Host "  - SharpKeys from WinGet"
-Write-Host "  - starship from WinGet"
 Write-Host "  - LocalSend from WinGet"
 Write-Host "  - Node.js from WinGet"
 Write-Host "  - Google Chrome from WinGet"
@@ -60,7 +59,6 @@ $commands= @(
     'cmd.exe /C winget.exe install --id "VSCodium.VSCodium" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "Discord.Discord" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "RandyRants.SharpKeys" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
-    'cmd.exe /C winget.exe install --id "Starship.Starship" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "LocalSend.LocalSend" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "OpenJS.NodeJS" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',
     'cmd.exe /C winget.exe install --id "Google.Chrome" --exact --source winget --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force',

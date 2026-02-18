@@ -325,8 +325,7 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
                                     <CheckBox Name="Step5" Content="5. VSCodium Settings"/>
                                     <CheckBox Name="Step6" Content="6. Antigravity Extensions"/>
                                     <CheckBox Name="Step7" Content="7. Antigravity Settings"/>
-                                    <CheckBox Name="Step8" Content="8. Windows Terminal (Starship)"/>
-                                    <CheckBox Name="Step9" Content="9. Neovim Config"/>
+                                    <CheckBox Name="Step9" Content="8. Neovim Config"/>
                                 </StackPanel>
                                 
                                 <Separator Background="{DynamicResource ControlBorder}" Margin="0,15"/>
@@ -382,13 +381,20 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Border Background="{DynamicResource ControlBackground}" CornerRadius="8" Padding="30">
                             <StackPanel>
-                                <Label Content="System Settings Backup" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,30" Foreground="{DynamicResource AccentColor}"/>
+                                <Label Content="System Settings Backup" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="{DynamicResource AccentColor}"/>
                                 
-                                <Button Name="ExportBtn" Content="Export Settings (Backup)" Width="280" Height="40" Margin="0,0,0,10"/>
-                                <TextBlock Text="Saves Registry keys and Profile to local folder." HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,30"/>
+                                <StackPanel Orientation="Vertical" Margin="0,0,0,20" HorizontalAlignment="Center">
+                                    <CheckBox Name="BackupTheme" Content="Theme &amp; Personalization" IsChecked="True"/>
+                                    <CheckBox Name="BackupExplorer" Content="Explorer &amp; Search" IsChecked="True"/>
+                                    <CheckBox Name="BackupMouse" Content="Mouse &amp; Touchpad" IsChecked="True"/>
+                                    <CheckBox Name="BackupProfile" Content="PowerShell Profile" IsChecked="True"/>
+                                </StackPanel>
+
+                                <Button Name="ExportBtn" Content="Export Selected (Backup)" Width="280" Height="40" Margin="0,0,0,10"/>
+                                <TextBlock Text="Saves selected settings to local folder." HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,30"/>
                                 
-                                <Button Name="ImportBtn" Content="Import Settings (Restore)" Width="280" Height="40" Background="#A03030" BorderBrush="#A03030"/>
-                                <TextBlock Text="Restores settings from local folder." HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,5,0,0"/>
+                                <Button Name="ImportBtn" Content="Import Selected (Restore)" Width="280" Height="40" Background="#A03030" BorderBrush="#A03030"/>
+                                <TextBlock Text="Restores selected settings from local folder." HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,5,0,0"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -463,10 +469,11 @@ try {
 
     # Locate Controls
     $controls = @("GitNameBox", "GitEmailBox", "FontSelector", 
-        "Step1", "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9",
+        "Step1", "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step9",
         "RunSetupBtn", 
         "FetchReposBtn", "RepoListView", "CloneReposBtn",
-        "ExportBtn", "ImportBtn", "LogBox", "ThemeToggle", "RestartBtn")
+        "ExportBtn", "ImportBtn", "BackupTheme", "BackupExplorer", "BackupMouse", "BackupProfile",
+        "LogBox", "ThemeToggle", "RestartBtn")
     
     $gui = @{}
     foreach ($id in $controls) {
@@ -610,55 +617,9 @@ try {
                 catch { Log "Font Install Failed: $_" }
             }
 
-            # Step 8 Terminal
-            if ($gui["Step8"].IsChecked) {
-                Log "Configuring Terminal..."
-                # 1. Install Starship
-                if (-not (Get-Command starship -ErrorAction SilentlyContinue)) { 
-                    winget install Starship.Starship -e --silent --accept-source-agreements --accept-package-agreements 
-                    Log "Installed Starship"
-                }
 
-                # 2. Configure PowerShell 7 Profile
-                # Target: ~\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
-                $ps7Dir = Join-Path ([System.Environment]::GetFolderPath('MyDocuments')) "PowerShell"
-                $ps7Profile = Join-Path $ps7Dir "Microsoft.PowerShell_profile.ps1"
-
-                if (-not (Test-Path $ps7Dir)) { New-Item -ItemType Directory -Path $ps7Dir -Force | Out-Null }
-                
-                # Append init script if not present
-                $initLine = "Invoke-Expression (&starship init powershell)"
-                try {
-                    if (-not (Test-Path $ps7Profile)) {
-                        New-Item -Path $ps7Profile -ItemType File -Force | Out-Null
-                        Add-Content -Path $ps7Profile -Value "`n$initLine"
-                        Log "Created PowerShell 7 Profile: $ps7Profile"
-                    }
-                    else {
-                        $content = Get-Content $ps7Profile -Raw
-                        if ($content -notmatch "starship init powershell") {
-                            Add-Content -Path $ps7Profile -Value "`n$initLine"
-                            Log "Updated PowerShell 7 Profile."
-                        }
-                    }
-                }
-                catch { Log "Failed to update PS7 Profile: $_" }
-
-                # 3. Configure Starship Preset (Gruvbox-Rainbow)
-                # Create ~/.config directory
-                $configDir = Join-Path $HOME ".config"
-                if (-not (Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force | Out-Null }
-                
-                # Apply Preset
-                Log "Applying Starship Preset (gruvbox-rainbow)..."
-                try {
-                    Start-Process "starship" -ArgumentList "preset gruvbox-rainbow -o `"$configDir\starship.toml`"" -NoNewWindow -Wait
-                    Log "Starship configuration applied."
-                }
-                catch { Log "Failed to apply Starship preset: $_" }
-            }
         
-            # Step 9 Copy
+            # Step 8 Copy
             if ($gui["Step9"].IsChecked) {
                 Log "Copying Neovim config..."
                 Copy-Item -Path (Join-Path $ScriptDir "nvim") -Destination "$env:LOCALAPPDATA\nvim" -Recurse -Force
@@ -829,20 +790,50 @@ try {
     $gui["ExportBtn"].Add_Click({
             Log "Running Export Script..."
             $script = Join-Path $ScriptDir "export-setting.ps1"
+            
             if (Test-Path $script) { 
-                & $script | Out-String | ForEach-Object { Log $_ }
+                $params = @{}
+                if ($gui["BackupTheme"].IsChecked) { $params["Theme"] = $true }
+                if ($gui["BackupExplorer"].IsChecked) { $params["Explorer"] = $true }
+                if ($gui["BackupMouse"].IsChecked) { $params["Mouse"] = $true }
+                if ($gui["BackupProfile"].IsChecked) { $params["Profile"] = $true }
+
+                if ($params.Count -eq 0) {
+                     Log "No items selected for export."
+                     return
+                }
+
+                # Construct command string for logging
+                $logStr = $params.Keys | ForEach-Object { "-$_" }
+                Log "Exporting: $($logStr -join ' ')"
+                
+                & $script @params | Out-String | ForEach-Object { Log $_ }
                 Log "Export finished."
             }
             else { Log "Script not found." }
         })
 
     $gui["ImportBtn"].Add_Click({
-            $res = [System.Windows.MessageBox]::Show("Are you sure you want to overwrite current settings?", "Confirm Import", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Warning)
+            $params = @{}
+            if ($gui["BackupTheme"].IsChecked) { $params["Theme"] = $true }
+            if ($gui["BackupExplorer"].IsChecked) { $params["Explorer"] = $true }
+            if ($gui["BackupMouse"].IsChecked) { $params["Mouse"] = $true }
+            if ($gui["BackupProfile"].IsChecked) { $params["Profile"] = $true }
+
+            if ($params.Count -eq 0) {
+                 Log "No items selected for import."
+                 return
+            }
+
+            $logStr = $params.Keys | ForEach-Object { "-$_" }
+            $msg = "Are you sure you want to overwrite logic for:`n" + ($logStr -join "`n")
+            $res = [System.Windows.MessageBox]::Show($msg, "Confirm Import", [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Warning)
+            
             if ($res -eq "Yes") {
                 Log "Running Import Script..."
                 $script = Join-Path $ScriptDir "import-settings.ps1"
                 if (Test-Path $script) {
-                    & $script | Out-String | ForEach-Object { Log $_ }
+                    & $script @params | Out-String | ForEach-Object { Log $_ }
                     Log "Import finished."
                 }
                 else { Log "Script not found." }
