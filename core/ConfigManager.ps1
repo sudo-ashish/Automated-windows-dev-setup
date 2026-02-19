@@ -2,7 +2,7 @@ $Global:Config = $null
 
 function Load-Config {
     param(
-        [string]$ConfigPath = (Join-Path $PSScriptRoot "../../config.json")
+        [string]$ConfigPath = (Join-Path $PSScriptRoot "../config.json")
     )
 
     if (Test-Path $ConfigPath) {

@@ -6,7 +6,7 @@ function Invoke-GUI {
     Add-Type -AssemblyName WindowsBase
 
     if (-not $Global:AppRoot) { $Global:AppRoot = Resolve-Path (Join-Path $PSScriptRoot "../..") }
-    $xamlPath = Join-Path $Global:AppRoot "src/ui/Main.xaml"
+    $xamlPath = Join-Path $Global:AppRoot "ui/Main.xaml"
     if (-not (Test-Path $xamlPath)) {
         Write-Log "XAML file not found: $xamlPath" -Level ERROR
         return
