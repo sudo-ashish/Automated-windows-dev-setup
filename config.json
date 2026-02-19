@@ -5,7 +5,9 @@
     "software_install": true,
     "debloat": true,
     "backup_restore": true,
-    "system_setup": true
+    "system_setup": true,
+    "github_repos": true,
+    "updates": true
   },
   "settings": {
     "log_level": "INFO",
@@ -25,9 +27,14 @@
   },
   "modules": {
     "debloat": {
-      "remove_preinstalled_apps": true,
-      "remove_onedrive": true,
-      "windows_feature_cleanup": false
+      "telemetry_disable": true,
+      "bloatware_removal": true,
+      "bing_search_disable": true
+    },
+    "github": {
+      "auto_clone": false,
+      "target_path": "Documents/github-repo",
+      "repos_to_sync": []
     },
     "software": {
       "installer": "winget",

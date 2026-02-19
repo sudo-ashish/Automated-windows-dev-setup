@@ -22,6 +22,8 @@ param(
     [switch]$Restore,
     [switch]$Setup,
     [switch]$Debloat,
+    [switch]$GitHub,
+    [switch]$Update,
     [switch]$All,
     [switch]$GUI
 )
@@ -37,7 +39,7 @@ Write-Log "winHelp Launcher starting..." -Level INFO
 Load-Config
 
 # 3. Determine Execution Mode
-if (-not ($Software -or $Backup -or $Setup -or $Debloat -or $All -or $GUI)) {
+if (-not ($Software -or $Backup -or $Restore -or $Setup -or $Debloat -or $GitHub -or $Update -or $All -or $GUI)) {
     Write-Log "No parameters provided. Defaulting to GUI mode." -Level INFO
     $GUI = $true
 }
@@ -51,12 +53,16 @@ if ($All) {
     if (Test-FeatureEnabled "backup_restore") { $ModulesToRun += "Backups" }
     if (Test-FeatureEnabled "system_setup") { $ModulesToRun += "Setup" }
     if (Test-FeatureEnabled "debloat") { $ModulesToRun += "Debloater" }
+    if (Test-FeatureEnabled "github_repos") { $ModulesToRun += "GitHub" }
+    if (Test-FeatureEnabled "updates") { $ModulesToRun += "Updates" }
 }
 else {
     if ($Software) { $ModulesToRun += "Installers" }
     if ($Backup -or $Restore) { $ModulesToRun += "Backups" }
     if ($Setup) { $ModulesToRun += "Setup" }
     if ($Debloat) { $ModulesToRun += "Debloater" }
+    if ($GitHub) { $ModulesToRun += "GitHub" }
+    if ($Update) { $ModulesToRun += "Updates" }
 }
 
 # 5. Execute Modules (Headless/CLI path)
@@ -65,24 +71,28 @@ if ($ModulesToRun.Count -gt 0) {
         $ModulePath = Join-Path $AppRoot "src/modules/$ModuleName.ps1"
         if (Test-Path $ModulePath) {
             Write-Log "Loading module: $ModuleName" -Level INFO
-            . $ModulePath
-            
-            # Execute the primary function of the module
-            switch ($ModuleName) {
-                "Installers" { Invoke-AppInstall }
-                "Backups" { 
-                    if ($Restore) { Invoke-Restore -All }
-                    else { Invoke-Backup -All }
+            try {
+                . $ModulePath
+                
+                # Execute the primary function of the module
+                switch ($ModuleName) {
+                    "Installers" { Invoke-AppInstall }
+                    "Backups" { 
+                        if ($Restore) { Invoke-Restore -All }
+                        else { Invoke-Backup -All }
+                    }
+                    "Setup" { Invoke-Setup }
+                    "Debloater" { Invoke-Debloat }
+                    "GitHub" { Invoke-GitHubRepos }
+                    "Updates" { Invoke-Update }
                 }
-                "Setup" { Invoke-Setup }
-                "Debloater" { Invoke-Debloat }
+            }
+            catch {
+                Write-Log "Failed to execute module $($ModuleName): $($_.Exception.Message)" -Level ERROR
             }
         }
         else {
-            # For Phase 1, create placeholders if missing
-            Write-Log "Module script not found: $ModulePath. Creating placeholder..." -Level WARN
-            "Write-Log 'Placeholder for $ModuleName' -Level INFO" | Out-File $ModulePath
-            . $ModulePath
+            Write-Log "Module script not found: $ModulePath" -Level WARN
         }
     }
 }
