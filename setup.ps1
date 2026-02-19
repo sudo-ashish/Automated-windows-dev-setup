@@ -325,7 +325,8 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
                                     <CheckBox Name="Step5" Content="5. VSCodium Settings"/>
                                     <CheckBox Name="Step6" Content="6. Antigravity Extensions"/>
                                     <CheckBox Name="Step7" Content="7. Antigravity Settings"/>
-                                    <CheckBox Name="Step9" Content="8. Neovim Config"/>
+                                    <CheckBox Name="Step8" Content="8. Merge Terminal Defaults"/>
+                                    <CheckBox Name="Step9" Content="9. Neovim Config"/>
                                 </StackPanel>
                                 
                                 <Separator Background="{DynamicResource ControlBorder}" Margin="0,15"/>
@@ -469,7 +470,7 @@ try {
 
     # Locate Controls
     $controls = @("GitNameBox", "GitEmailBox", "FontSelector", 
-        "Step1", "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step9",
+        "Step1", "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9",
         "RunSetupBtn", 
         "FetchReposBtn", "RepoListView", "CloneReposBtn",
         "ExportBtn", "ImportBtn", "BackupTheme", "BackupExplorer", "BackupMouse", "BackupProfile",
@@ -619,7 +620,63 @@ try {
 
 
         
-            # Step 8 Copy
+            # Step 8: Merge Terminal Defaults
+            if ($gui["Step8"].IsChecked) {
+                Log "Merging Terminal Defaults..."
+                try {
+                    # Path to settings.json (LocalState)
+                    $settingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+                    $defaultsPath = Join-Path $ScriptDir "wt-defaults.json"
+
+                    if (Test-Path $settingsPath) {
+                        if (Test-Path $defaultsPath) {
+                            # Load JSON
+                            $settings = Get-Content $settingsPath -Raw | ConvertFrom-Json
+                            $newDefaults = Get-Content $defaultsPath -Raw | ConvertFrom-Json
+
+                            # Ensure profiles exists
+                            if (-not $settings.PSObject.Properties["profiles"]) {
+                                $settings | Add-Member -MemberType NoteProperty -Name profiles -Value (@{})
+                            }
+
+                            # Ensure defaults exists within profiles
+                            if (-not $settings.profiles.PSObject.Properties["defaults"]) {
+                                $settings.profiles | Add-Member -MemberType NoteProperty -Name defaults -Value (@{})
+                            }
+
+                            # Merge detailed properties
+                            foreach ($prop in $newDefaults.PSObject.Properties) {
+                                # Check if property exists in target defaults, if so update, else add
+                                if ($settings.profiles.defaults.PSObject.Properties[$prop.Name]) {
+                                    $settings.profiles.defaults.$($prop.Name) = $prop.Value
+                                }
+                                else {
+                                    $settings.profiles.defaults | Add-Member `
+                                        -MemberType NoteProperty `
+                                        -Name $prop.Name `
+                                        -Value $prop.Value `
+                                        -Force
+                                }
+                            }
+
+                            # Save back
+                            $settings | ConvertTo-Json -Depth 10 | Set-Content $settingsPath
+                            Log "Terminal defaults merged successfully."
+                        }
+                        else {
+                            Log "Warning: wt-defaults.json not found at $defaultsPath"
+                        }
+                    }
+                    else {
+                        Log "Warning: Windows Terminal settings.json not found."
+                    }
+                }
+                catch {
+                    Log "Failed to merge terminal settings: $_"
+                }
+            }
+
+            # Step 9 Copy
             if ($gui["Step9"].IsChecked) {
                 Log "Copying Neovim config..."
                 Copy-Item -Path (Join-Path $ScriptDir "nvim") -Destination "$env:LOCALAPPDATA\nvim" -Recurse -Force
