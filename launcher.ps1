@@ -1,106 +1,86 @@
 <#
 .SYNOPSIS
-    winHelp Launcher - Central orchestrator for modular Windows setup.
+    winHelp Launcher - Central orchestrator for the modernized Windows setup utility.
 .DESCRIPTION
-    Supports both CLI and GUI modes. Loads config and runs requested modules.
-.PARAMETER Software
-    Run software installation module.
-.PARAMETER Backup
-    Run backup/restore module.
-.PARAMETER Setup
-    Run system setup module (Git, Fonts, etc).
-.PARAMETER Debloat
-    Run Windows debloating module.
-.PARAMETER All
-    Run all enabled modules from config.
-.PARAMETER GUI
-    Launch the graphical interface (default if no args provided).
+    v2.0 Orchestrator. Supports both CLI and high-performance GUI.
 #>
 param(
-    [switch]$Software,
+    [switch]$Install,
+    [switch]$Git,
+    [switch]$GitHub,
     [switch]$Backup,
     [switch]$Restore,
-    [switch]$Setup,
     [switch]$Debloat,
-    [switch]$GitHub,
     [switch]$Update,
     [switch]$All,
     [switch]$GUI
 )
 
-# 1. Initialize Paths & Core Utilities
-$AppRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-. (Join-Path $AppRoot "src/core/Logger.ps1")
-. (Join-Path $AppRoot "src/core/Config.ps1")
+# 1. Initialize Global State
+$Global:AppRoot = $PSScriptRoot
+. (Join-Path $Global:AppRoot "core/Logger.ps1")
+. (Join-Path $Global:AppRoot "core/ConfigManager.ps1")
 
 Write-Log "winHelp Launcher starting..." -Level INFO
 
 # 2. Load Configuration
 Load-Config
 
-# 3. Determine Execution Mode
-if (-not ($Software -or $Backup -or $Restore -or $Setup -or $Debloat -or $GitHub -or $Update -or $All -or $GUI)) {
+# 3. Handle Execution Mode
+if (-not ($Install -or $Git -or $GitHub -or $Backup -or $Restore -or $Debloat -or $Update -or $All -or $GUI)) {
     Write-Log "No parameters provided. Defaulting to GUI mode." -Level INFO
     $GUI = $true
 }
 
-# 4. Modules to Run
+# 4. Modules Preparation
 $ModulesToRun = @()
-
 if ($All) {
-    Write-Log "Running all enabled modules from config..." -Level INFO
-    if (Test-FeatureEnabled "software_install") { $ModulesToRun += "Installers" }
-    if (Test-FeatureEnabled "backup_restore") { $ModulesToRun += "Backups" }
-    if (Test-FeatureEnabled "system_setup") { $ModulesToRun += "Setup" }
-    if (Test-FeatureEnabled "debloat") { $ModulesToRun += "Debloater" }
-    if (Test-FeatureEnabled "github_repos") { $ModulesToRun += "GitHub" }
-    if (Test-FeatureEnabled "updates") { $ModulesToRun += "Updates" }
+    $ModulesToRun = @("Installers", "git/Git", "git/GitHub", "Backups", "Debloater", "Updates")
 }
 else {
-    if ($Software) { $ModulesToRun += "Installers" }
+    if ($Install) { $ModulesToRun += "Installers" }
+    if ($Git) { $ModulesToRun += "git/Git" }
+    if ($GitHub) { $ModulesToRun += "git/GitHub" }
     if ($Backup -or $Restore) { $ModulesToRun += "Backups" }
-    if ($Setup) { $ModulesToRun += "Setup" }
     if ($Debloat) { $ModulesToRun += "Debloater" }
-    if ($GitHub) { $ModulesToRun += "GitHub" }
     if ($Update) { $ModulesToRun += "Updates" }
 }
 
-# 5. Execute Modules (Headless/CLI path)
+# 5. CLI Execution Path
 if ($ModulesToRun.Count -gt 0) {
     foreach ($ModuleName in $ModulesToRun) {
-        $ModulePath = Join-Path $AppRoot "src/modules/$ModuleName.ps1"
+        $ModulePath = Join-Path $Global:AppRoot "modules/$ModuleName.ps1"
         if (Test-Path $ModulePath) {
-            Write-Log "Loading module: $ModuleName" -Level INFO
+            Write-Log "Running Module: $ModuleName" -Level INFO
             try {
                 . $ModulePath
-                
-                # Execute the primary function of the module
+                # Dispatcher for module-specific entry points if needed
                 switch ($ModuleName) {
                     "Installers" { Invoke-AppInstall }
-                    "Backups" { 
-                        if ($Restore) { Invoke-Restore -All }
-                        else { Invoke-Backup -All }
-                    }
-                    "Setup" { Invoke-Setup }
+                    "git/Git" { Set-GitConfig; Install-Tools }
+                    "git/GitHub" { Invoke-GitHubFetch } # Just a pulse check for CLI
+                    "Backups" { if ($Restore) { Invoke-Restore -All } else { Invoke-Backup -All } }
                     "Debloater" { Invoke-Debloat }
-                    "GitHub" { Invoke-GitHubRepos }
                     "Updates" { Invoke-Update }
                 }
             }
             catch {
-                Write-Log "Failed to execute module $($ModuleName): $($_.Exception.Message)" -Level ERROR
+                Write-Log "Failed to execute $ModuleName: $($_.Exception.Message)" -Level ERROR
             }
         }
         else {
-            Write-Log "Module script not found: $ModulePath" -Level WARN
+            Write-Log "Module not found: $ModulePath" -Level WARN
         }
     }
 }
 
-# 6. Launch GUI (WPF path)
+# 6. GUI Execution Path
 if ($GUI) {
-    Write-Log "Launching GUI (Phase 4 Implementation)..." -Level INFO
-    # TODO: Implement Phase 4 GUI logic
+    Write-Log "Initializing GUI v2 Interface..." -Level INFO
+    # Source all modules for UI availability
+    Get-ChildItem -Path (Join-Path $Global:AppRoot "modules") -Filter "*.ps1" -Recurse | ForEach-Object { . $_.FullName }
+    . (Join-Path $Global:AppRoot "ui/UIManager.ps1")
+    Invoke-GUI
 }
 
 Write-Log "winHelp execution finished." -Level INFO
