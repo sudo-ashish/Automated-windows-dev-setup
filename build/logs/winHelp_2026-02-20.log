@@ -1,0 +1,325 @@
+[2026-02-20 00:07:03] [INFO] winHelp Launcher starting...
+[2026-02-20 00:07:03] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:07:03] [INFO] Loading module: Installers
+[2026-02-20 00:07:03] [INFO] No specific App IDs provided. Checking config...
+[2026-02-20 00:07:03] [INFO] Loading 3 apps from config.
+[2026-02-20 00:07:03] [INFO] Installing PowerShell (Microsoft.PowerShell)...
+[2026-02-20 00:07:03] [DEBUG] Running: winget install --id "Microsoft.PowerShell" --exact --source winget --accept-source-agreements --accept-package-agreements --silent
+[2026-02-20 00:07:10] [ERROR] Failed to install PowerShell. Exit code: -1978335189
+[2026-02-20 00:07:10] [INFO] Installing Fastfetch (Fastfetch-cli.Fastfetch)...
+[2026-02-20 00:07:10] [DEBUG] Running: winget install --id "Fastfetch-cli.Fastfetch" --exact --source winget --accept-source-agreements --accept-package-agreements --silent
+[2026-02-20 00:07:11] [ERROR] Failed to install Fastfetch. Exit code: -1978335189
+[2026-02-20 00:07:11] [INFO] Installing Git (Git.Git)...
+[2026-02-20 00:07:11] [DEBUG] Running: winget install --id "Git.Git" --exact --source winget --accept-source-agreements --accept-package-agreements --silent
+[2026-02-20 00:07:12] [ERROR] Failed to install Git. Exit code: -1978335189
+[2026-02-20 00:07:12] [INFO] winHelp execution finished.
+[2026-02-20 00:10:52] [INFO] winHelp Launcher starting...
+[2026-02-20 00:10:52] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:10:52] [INFO] Loading module: Backups
+[2026-02-20 00:10:53] [INFO] Starting backup to C:\Users\Pear\Documents\winHelp\system-backup
+[2026-02-20 00:10:53] [INFO] Exporting Themes...
+[2026-02-20 00:10:53] [INFO] Exporting Explorer/Search...
+[2026-02-20 00:10:53] [INFO] Exporting Mouse/Touchpad...
+[2026-02-20 00:10:53] [INFO] Exporting Profile from: C:\Users\Pear\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
+[2026-02-20 00:10:53] [INFO] Backup completed.
+[2026-02-20 00:10:53] [INFO] winHelp execution finished.
+[2026-02-20 00:12:18] [INFO] winHelp Launcher starting...
+[2026-02-20 00:12:19] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:12:19] [INFO] Loading module: Setup
+[2026-02-20 00:12:19] [INFO] Starting System Setup...
+[2026-02-20 00:12:19] [INFO] Setting Git Config: User Name / user@email.com
+[2026-02-20 00:12:19] [INFO] Installing GH CLI and FZF...
+[2026-02-20 00:12:19] [INFO] Installing Font: JetBrainsMono
+[2026-02-20 00:12:19] [DEBUG] Downloading https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip...
+[2026-02-20 00:21:19] [INFO] winHelp Launcher starting...
+[2026-02-20 00:21:19] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:21:19] [INFO] Loading module: Debloater
+[2026-02-20 00:21:19] [INFO] Starting Debloater Module...
+[2026-02-20 00:21:19] [WARN] Debloater requires Administrator privileges for most tasks.
+[2026-02-20 00:21:19] [INFO] Disabling Telemetry & Data Collection...
+[2026-02-20 00:21:19] [DEBUG] Stopping and disabling DiagTrack service...
+[2026-02-20 00:21:19] [INFO] Removing common preinstalled bloatware...
+[2026-02-20 00:21:19] [DEBUG] Attempting to remove Microsoft.Messaging...
+[2026-02-20 00:21:19] [ERROR] Failed to execute module Debloater: Access is denied.
+
+Access is denied.
+
+[2026-02-20 00:21:19] [INFO] winHelp execution finished.
+[2026-02-20 00:22:03] [INFO] winHelp Launcher starting...
+[2026-02-20 00:22:03] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:22:03] [INFO] Loading module: GitHub
+[2026-02-20 00:22:03] [INFO] Auto-clone disabled in config. GitHub module only ports logic for UI/CLI usage.
+[2026-02-20 00:22:03] [INFO] winHelp execution finished.
+[2026-02-20 00:22:15] [INFO] winHelp Launcher starting...
+[2026-02-20 00:22:15] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:22:16] [INFO] Loading module: Updates
+[2026-02-20 00:22:16] [INFO] Checking for system and package updates...
+[2026-02-20 00:22:16] [INFO] Running Winget upgrade...
+[2026-02-20 00:29:46] [INFO] winHelp Launcher starting...
+[2026-02-20 00:29:46] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:29:46] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:29:46] [INFO] Launching GUI...
+[2026-02-20 00:29:46] [INFO] Initializing WPF Interface...
+[2026-02-20 00:29:47] [ERROR] Failed to load GUI: Cannot convert value "System.Collections.Hashtable" to type "System.Management.Automation.SwitchParameter". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2026-02-20 00:29:47] [INFO] winHelp execution finished.
+[2026-02-20 00:30:41] [INFO] winHelp Launcher starting...
+[2026-02-20 00:30:41] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:30:41] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:30:41] [INFO] Launching GUI...
+[2026-02-20 00:30:41] [INFO] Initializing WPF Interface...
+[2026-02-20 00:30:41] [ERROR] Failed to load GUI: Cannot convert value "System.Collections.Hashtable" to type "System.Management.Automation.SwitchParameter". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2026-02-20 00:30:41] [DEBUG] Stack: at Invoke-GUI, C:\Users\Pear\Documents\winHelp\src\ui\UIManager.ps1: line 31
+at <ScriptBlock>, C:\Users\Pear\Documents\winHelp\launcher.ps1: line 106
+[2026-02-20 00:30:41] [INFO] winHelp execution finished.
+[2026-02-20 00:32:14] [INFO] Initializing WPF Interface...
+[2026-02-20 00:32:14] [ERROR] XAML file not found: C:\Users\Pear\Documents\winHelp\src\ui\src\ui\Main.xaml
+[2026-02-20 00:32:58] [INFO] Initializing WPF Interface...
+[2026-02-20 00:32:58] [ERROR] XAML file not found: C:\Users\Pear\Documents\winHelp\src\src\ui\Main.xaml
+[2026-02-20 00:33:25] [INFO] Initializing WPF Interface...
+[2026-02-20 00:36:43] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:38:28] [INFO] winHelp Launcher starting...
+[2026-02-20 00:38:28] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:38:28] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:38:28] [INFO] Launching GUI...
+[2026-02-20 00:38:28] [INFO] Initializing WPF Interface...
+[2026-02-20 00:38:29] [ERROR] Failed to load GUI: Cannot convert value "System.Collections.Hashtable" to type "System.Management.Automation.SwitchParameter". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2026-02-20 00:38:29] [DEBUG] Stack: at Invoke-GUI, C:\Users\Pear\Documents\winHelp\src\ui\UIManager.ps1: line 33
+at <ScriptBlock>, C:\Users\Pear\Documents\winHelp\launcher.ps1: line 106
+[2026-02-20 00:38:29] [INFO] winHelp execution finished.
+[2026-02-20 00:38:52] [INFO] winHelp Launcher starting...
+[2026-02-20 00:38:52] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:38:52] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:38:52] [INFO] Launching GUI...
+[2026-02-20 00:38:52] [INFO] Initializing WPF Interface...
+[2026-02-20 00:38:52] [ERROR] Failed to load GUI: Cannot convert value "System.Collections.Hashtable" to type "System.Management.Automation.SwitchParameter". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.
+[2026-02-20 00:38:52] [DEBUG] Stack: at Invoke-GUI, C:\Users\Pear\Documents\winHelp\src\ui\UIManager.ps1: line 33
+at <ScriptBlock>, C:\Users\Pear\Documents\winHelp\launcher.ps1: line 106
+[2026-02-20 00:38:52] [INFO] winHelp execution finished.
+[2026-02-20 00:40:15] [INFO] winHelp Launcher starting...
+[2026-02-20 00:40:15] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:40:15] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:40:15] [INFO] Launching GUI...
+[2026-02-20 00:40:15] [INFO] Initializing WPF Interface...
+[2026-02-20 00:40:15] [DEBUG] Finding control: GitNameBox
+[2026-02-20 00:40:15] [DEBUG] Finding control: GitEmailBox
+[2026-02-20 00:40:15] [DEBUG] Finding control: FontSelector
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step2a
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step2b
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step3
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step4
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step5
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step6
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step7
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step8
+[2026-02-20 00:40:15] [DEBUG] Finding control: Step9
+[2026-02-20 00:40:15] [DEBUG] Finding control: RunSetupBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: FetchReposBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: RepoListView
+[2026-02-20 00:40:15] [DEBUG] Finding control: CloneReposBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: ExportBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: ImportBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: BackupTheme
+[2026-02-20 00:40:15] [DEBUG] Finding control: BackupExplorer
+[2026-02-20 00:40:15] [DEBUG] Finding control: BackupMouse
+[2026-02-20 00:40:15] [DEBUG] Finding control: BackupProfile
+[2026-02-20 00:40:15] [DEBUG] Finding control: LogBox
+[2026-02-20 00:40:15] [DEBUG] Finding control: ThemeToggle
+[2026-02-20 00:40:15] [DEBUG] Finding control: RestartBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: AppCheckPanel
+[2026-02-20 00:40:15] [DEBUG] Finding control: SelectAllAppsBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: DeselectAllAppsBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: InstallAppsBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: SelectAllStepsBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: DeselectAllStepsBtn
+[2026-02-20 00:40:15] [DEBUG] Finding control: DebloatTelemetry
+[2026-02-20 00:40:15] [DEBUG] Finding control: DebloatApps
+[2026-02-20 00:40:15] [DEBUG] Finding control: DebloatBing
+[2026-02-20 00:40:15] [DEBUG] Finding control: RunDebloatBtn
+[2026-02-20 00:40:15] [INFO] GUI Ready. Welcome to Automated Setup.
+[2026-02-20 00:43:46] [INFO] winHelp execution finished.
+[2026-02-20 00:44:22] [INFO] winHelp Launcher starting...
+[2026-02-20 00:44:22] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:44:22] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:44:22] [INFO] Launching GUI...
+[2026-02-20 00:44:22] [INFO] Initializing WPF Interface...
+[2026-02-20 00:44:22] [DEBUG] Finding control: GitNameBox
+[2026-02-20 00:44:22] [DEBUG] Finding control: GitEmailBox
+[2026-02-20 00:44:22] [DEBUG] Finding control: FontSelector
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step2a
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step2b
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step3
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step4
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step5
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step6
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step7
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step8
+[2026-02-20 00:44:22] [DEBUG] Finding control: Step9
+[2026-02-20 00:44:22] [DEBUG] Finding control: RunSetupBtn
+[2026-02-20 00:44:22] [DEBUG] Finding control: FetchReposBtn
+[2026-02-20 00:44:22] [DEBUG] Finding control: RepoListView
+[2026-02-20 00:44:22] [DEBUG] Finding control: CloneReposBtn
+[2026-02-20 00:44:22] [DEBUG] Finding control: ExportBtn
+[2026-02-20 00:44:22] [DEBUG] Finding control: ImportBtn
+[2026-02-20 00:44:22] [DEBUG] Finding control: BackupTheme
+[2026-02-20 00:44:22] [DEBUG] Finding control: BackupExplorer
+[2026-02-20 00:44:22] [DEBUG] Finding control: BackupMouse
+[2026-02-20 00:44:22] [DEBUG] Finding control: BackupProfile
+[2026-02-20 00:44:22] [DEBUG] Finding control: LogBox
+[2026-02-20 00:44:22] [DEBUG] Finding control: ThemeToggle
+[2026-02-20 00:44:22] [DEBUG] Finding control: RestartBtn
+[2026-02-20 00:44:22] [DEBUG] Finding control: AppCheckPanel
+[2026-02-20 00:44:23] [DEBUG] Finding control: SelectAllAppsBtn
+[2026-02-20 00:44:23] [DEBUG] Finding control: DeselectAllAppsBtn
+[2026-02-20 00:44:23] [DEBUG] Finding control: InstallAppsBtn
+[2026-02-20 00:44:23] [DEBUG] Finding control: SelectAllStepsBtn
+[2026-02-20 00:44:23] [DEBUG] Finding control: DeselectAllStepsBtn
+[2026-02-20 00:44:23] [DEBUG] Finding control: DebloatTelemetry
+[2026-02-20 00:44:23] [DEBUG] Finding control: DebloatApps
+[2026-02-20 00:44:23] [DEBUG] Finding control: DebloatBing
+[2026-02-20 00:44:23] [DEBUG] Finding control: RunDebloatBtn
+[2026-02-20 00:44:23] [INFO] GUI Ready. Welcome to Automated Setup.
+[2026-02-20 00:44:35] [INFO] Fetching GitHub repositories...
+[2026-02-20 00:44:37] [INFO] Authenticated as: sudo-ashish
+[2026-02-20 00:44:37] [INFO] Found 8 repositories.
+[2026-02-20 00:51:54] [INFO] winHelp execution finished.
+[2026-02-20 00:58:04] [INFO] winHelp Launcher starting...
+[2026-02-20 00:58:04] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:58:04] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:58:04] [INFO] Launching GUI...
+[2026-02-20 00:58:05] [INFO] Initializing WPF Interface...
+[2026-02-20 00:58:05] [DEBUG] Finding control: GitNameBox
+[2026-02-20 00:58:05] [DEBUG] Finding control: GitEmailBox
+[2026-02-20 00:58:05] [DEBUG] Finding control: FontSelector
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step2a
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step2b
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step3
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step4
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step5
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step6
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step7
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step8
+[2026-02-20 00:58:05] [DEBUG] Finding control: Step9
+[2026-02-20 00:58:05] [DEBUG] Finding control: RunSetupBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: FetchReposBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: RepoListView
+[2026-02-20 00:58:05] [DEBUG] Finding control: CloneReposBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: ExportBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: ImportBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: BackupTheme
+[2026-02-20 00:58:05] [DEBUG] Finding control: BackupExplorer
+[2026-02-20 00:58:05] [DEBUG] Finding control: BackupMouse
+[2026-02-20 00:58:05] [DEBUG] Finding control: BackupProfile
+[2026-02-20 00:58:05] [DEBUG] Finding control: LogBox
+[2026-02-20 00:58:05] [DEBUG] Finding control: ThemeToggle
+[2026-02-20 00:58:05] [DEBUG] Finding control: RestartBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: AppCheckPanel
+[2026-02-20 00:58:05] [DEBUG] Finding control: SelectAllAppsBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: DeselectAllAppsBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: InstallAppsBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: SelectAllStepsBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: DeselectAllStepsBtn
+[2026-02-20 00:58:05] [DEBUG] Finding control: DebloatTelemetry
+[2026-02-20 00:58:05] [DEBUG] Finding control: DebloatApps
+[2026-02-20 00:58:05] [DEBUG] Finding control: DebloatBing
+[2026-02-20 00:58:05] [DEBUG] Finding control: RunDebloatBtn
+[2026-02-20 00:58:06] [INFO] GUI Ready. Welcome to Automated Setup.
+[2026-02-20 00:58:14] [INFO] winHelp execution finished.
+[2026-02-20 00:58:45] [INFO] winHelp Launcher starting...
+[2026-02-20 00:58:45] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 00:58:45] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 00:58:45] [INFO] Launching GUI...
+[2026-02-20 00:58:45] [INFO] Initializing WPF Interface...
+[2026-02-20 00:58:45] [DEBUG] Finding control: GitNameBox
+[2026-02-20 00:58:45] [DEBUG] Finding control: GitEmailBox
+[2026-02-20 00:58:45] [DEBUG] Finding control: FontSelector
+[2026-02-20 00:58:45] [DEBUG] Finding control: Step2a
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step2b
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step3
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step4
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step5
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step6
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step7
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step8
+[2026-02-20 00:58:46] [DEBUG] Finding control: Step9
+[2026-02-20 00:58:46] [DEBUG] Finding control: RunSetupBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: FetchReposBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: RepoListView
+[2026-02-20 00:58:46] [DEBUG] Finding control: CloneReposBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: ExportBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: ImportBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: BackupTheme
+[2026-02-20 00:58:46] [DEBUG] Finding control: BackupExplorer
+[2026-02-20 00:58:46] [DEBUG] Finding control: BackupMouse
+[2026-02-20 00:58:46] [DEBUG] Finding control: BackupProfile
+[2026-02-20 00:58:46] [DEBUG] Finding control: LogBox
+[2026-02-20 00:58:46] [DEBUG] Finding control: ThemeToggle
+[2026-02-20 00:58:46] [DEBUG] Finding control: RestartBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: AppCheckPanel
+[2026-02-20 00:58:46] [DEBUG] Finding control: SelectAllAppsBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: DeselectAllAppsBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: InstallAppsBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: SelectAllStepsBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: DeselectAllStepsBtn
+[2026-02-20 00:58:46] [DEBUG] Finding control: DebloatTelemetry
+[2026-02-20 00:58:46] [DEBUG] Finding control: DebloatApps
+[2026-02-20 00:58:46] [DEBUG] Finding control: DebloatBing
+[2026-02-20 00:58:46] [DEBUG] Finding control: RunDebloatBtn
+[2026-02-20 00:58:46] [INFO] GUI Ready. Welcome to Automated Setup.
+[2026-02-20 00:58:55] [INFO] winHelp execution finished.
+[2026-02-20 01:00:06] [INFO] winHelp starting...
+[2026-02-20 01:00:06] [SUCCESS] Configuration loaded from C:\Users\Pear\Documents\winHelp\config.json
+[2026-02-20 01:00:06] [INFO] Entering Auto Mode (Headless)...
+[2026-02-20 01:00:06] [WARN] System Restore Point requires Administrator privileges. Skipping.
+[2026-02-20 01:00:58] [INFO] winHelp Launcher starting...
+[2026-02-20 01:00:58] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\src\core\..\..\config.json
+[2026-02-20 01:00:58] [INFO] No parameters provided. Defaulting to GUI mode.
+[2026-02-20 01:00:58] [INFO] Launching GUI...
+[2026-02-20 01:00:58] [INFO] Initializing WPF Interface...
+[2026-02-20 01:00:58] [DEBUG] Finding control: GitNameBox
+[2026-02-20 01:00:58] [DEBUG] Finding control: GitEmailBox
+[2026-02-20 01:00:58] [DEBUG] Finding control: FontSelector
+[2026-02-20 01:00:58] [DEBUG] Finding control: Step2a
+[2026-02-20 01:00:58] [DEBUG] Finding control: Step2b
+[2026-02-20 01:00:58] [DEBUG] Finding control: Step3
+[2026-02-20 01:00:58] [DEBUG] Finding control: Step4
+[2026-02-20 01:00:59] [DEBUG] Finding control: Step5
+[2026-02-20 01:00:59] [DEBUG] Finding control: Step6
+[2026-02-20 01:00:59] [DEBUG] Finding control: Step7
+[2026-02-20 01:00:59] [DEBUG] Finding control: Step8
+[2026-02-20 01:00:59] [DEBUG] Finding control: Step9
+[2026-02-20 01:00:59] [DEBUG] Finding control: RunSetupBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: FetchReposBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: RepoListView
+[2026-02-20 01:00:59] [DEBUG] Finding control: CloneReposBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: ExportBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: ImportBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: BackupTheme
+[2026-02-20 01:00:59] [DEBUG] Finding control: BackupExplorer
+[2026-02-20 01:00:59] [DEBUG] Finding control: BackupMouse
+[2026-02-20 01:00:59] [DEBUG] Finding control: BackupProfile
+[2026-02-20 01:00:59] [DEBUG] Finding control: LogBox
+[2026-02-20 01:00:59] [DEBUG] Finding control: ThemeToggle
+[2026-02-20 01:00:59] [DEBUG] Finding control: RestartBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: AppCheckPanel
+[2026-02-20 01:00:59] [DEBUG] Finding control: SelectAllAppsBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: DeselectAllAppsBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: InstallAppsBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: SelectAllStepsBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: DeselectAllStepsBtn
+[2026-02-20 01:00:59] [DEBUG] Finding control: DebloatTelemetry
+[2026-02-20 01:00:59] [DEBUG] Finding control: DebloatApps
+[2026-02-20 01:00:59] [DEBUG] Finding control: DebloatBing
+[2026-02-20 01:00:59] [DEBUG] Finding control: RunDebloatBtn
+[2026-02-20 01:00:59] [INFO] GUI Ready. Welcome to Automated Setup.
+[2026-02-20 01:01:09] [INFO] winHelp execution finished.
+[2026-02-20 01:11:11] [INFO] winHelp Launcher starting...
+[2026-02-20 01:11:11] [ERROR] config.json not found at C:\Users\Pear\Documents\winHelp\core\..\..\config.json
+[2026-02-20 01:32:56] [INFO] winHelp Launcher starting...
+[2026-02-20 01:32:56] [ERROR] config.json not found at C:\Users\Pear\Documents\winHelp\core\..\..\config.json
+[2026-02-20 01:33:06] [INFO] winHelp Launcher starting...
+[2026-02-20 01:33:07] [INFO] Configuration loaded from C:\Users\Pear\Documents\winHelp\core\..\config.json
+[2026-02-20 01:33:07] [INFO] Initializing GUI v2 Interface...
+[2026-02-20 01:33:07] [INFO] Initializing winHelp v2 Interface...
+[2026-02-20 01:33:07] [INFO] winHelp v2 Ready.
+[2026-02-20 01:34:25] [INFO] Setting Git Config: User Name / user@email.com
+[2026-02-20 01:34:25] [INFO] Git Identity Updated.

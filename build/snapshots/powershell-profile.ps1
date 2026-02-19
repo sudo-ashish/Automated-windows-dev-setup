@@ -3,6 +3,7 @@
 # ==============================================================================
 $AutoInstall = $true   # set false if you want no installs
 $AskBeforeInstall = $false
+$env:EDITOR = "nvim"
 
 $binaries = @(
     @{ Name="oh-my-posh"; Id="JanDeDobbeleer.OhMyPosh" },
@@ -113,7 +114,7 @@ function Update-PowerShell {
 
 function sysinfo { Get-ComputerInfo }
 
-function Edit-Profile { vim $PROFILE.CurrentUserAllHosts }
+function Edit-Profile { nvim $PROFILE }
 Set-Alias -Name ep -Value Edit-Profile
 
 # ==============================================================================
@@ -121,7 +122,9 @@ Set-Alias -Name ep -Value Edit-Profile
 # ==============================================================================
 function touch($file) { New-Item -ItemType File -Path $file -Force | Out-Null }
 
-function mkcd { param($dir) mkdir $dir -Force; Set-Location $dir }
+function mkcd { param([Parameter(Mandatory=$true)]$dir) mkdir $dir -Force; Set-Location $dir }
+
+function rmrf { param([Parameter(Mandatory=$true)]$path) Remove-Item -Path $path -Recurse -Force }
 
 function unzip ($file) {
     Write-Output("Extracting", $file, "to", $pwd)
@@ -129,14 +132,15 @@ function unzip ($file) {
     Expand-Archive -Path $fullFile -DestinationPath $pwd
 }
 
-function ff($name) {
+function ff {
+    param([Parameter(Mandatory=$true)]$name)
     Get-ChildItem -Recurse -Filter "*$name*" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
 }
 
 function la { Get-ChildItem | Format-Table -AutoSize }
 function ll { Get-ChildItem -Force | Format-Table -AutoSize }
 
-# Navigation
+# Navigation & Path
 function docs {
     $docs = if(([Environment]::GetFolderPath("MyDocuments"))) {([Environment]::GetFolderPath("MyDocuments"))} else {$HOME + "\Documents"}
     Set-Location -Path $docs
@@ -146,6 +150,8 @@ function dtop {
     $dtop = if ([Environment]::GetFolderPath("Desktop")) {[Environment]::GetFolderPath("Desktop")} else {$HOME + "\Desktop"}
     Set-Location -Path $dtop
 }
+
+function cpp { $pwd.Path | Set-Clipboard }
 
 # Process Management
 function pkill {
@@ -164,7 +170,19 @@ function k9 {
 }
 
 # ==============================================================================
-# 6. GIT SHORTCUTS
+# 6. QUALITY OF LIFE (Developer & Network)
+# ==============================================================================
+function cu { codium . }
+function o { ii . }
+function myip { ipconfig | findstr /i "ipv4" }
+function pubip { Invoke-RestMethod -Uri "https://api.ipify.org" }
+function flush { ipconfig /flushdns }
+function ports { Get-NetTCPConnection -State Listen | Select-Object LocalAddress, LocalPort, OwningProcess | Sort-Object LocalPort }
+function hq { param([Parameter(Mandatory=$true)]$q) Get-History | Where-Object { $_.CommandLine -like "*$q*" } }
+function cls! { Clear-Host; [PSConsoleUtilities.PSConsoleReadLine]::ClearHistory() }
+
+# ==============================================================================
+# 7. GIT SHORTCUTS
 # ==============================================================================
 function gs { git status }
 function ga { git add . }
@@ -177,38 +195,54 @@ function gcom { git add .; git commit -m "$args" }
 function lazyg { git add .; git commit -m "$args"; git push }
 
 # ==============================================================================
-# 7. HELP SYSTEM
+# 8. HELP SYSTEM
 # ==============================================================================
 function Show-Help {
     $helpText = @"
 $($PSStyle.Foreground.Cyan)PowerShell Profile Help$($PSStyle.Reset)
 $($PSStyle.Foreground.Yellow)=======================$($PSStyle.Reset)
-$($PSStyle.Foreground.Green)Edit-Profile$($PSStyle.Reset) - Opens the current user's profile for editing.
-$($PSStyle.Foreground.Green)Update-PowerShell$($PSStyle.Reset) - Checks for latest release and updates via Winget.
+$($PSStyle.Foreground.Green)Edit-Profile$($PSStyle.Reset)   - Edit this profile.
+$($PSStyle.Foreground.Green)ep$($PSStyle.Reset)             - Alias for Edit-Profile.
+$($PSStyle.Foreground.Green)Update-PowerShell$($PSStyle.Reset) - Update PWSH via Winget.
+$($PSStyle.Foreground.Green)sysinfo$($PSStyle.Reset)         - Detailed system specs.
+
+$($PSStyle.Foreground.Cyan)File & Navigation$($PSStyle.Reset)
+$($PSStyle.Foreground.Yellow)=======================$($PSStyle.Reset)
+$($PSStyle.Foreground.Green)la$($PSStyle.Reset)              - List items (Formatted Table).
+$($PSStyle.Foreground.Green)ll$($PSStyle.Reset)              - List items (Hidden included).
+$($PSStyle.Foreground.Green)mkcd <dir>$($PSStyle.Reset)      - Create and enter directory.
+$($PSStyle.Foreground.Green)rmrf <path>$($PSStyle.Reset)     - Force delete (Recursive).
+$($PSStyle.Foreground.Green)docs$($PSStyle.Reset)            - Jump to Documents.
+$($PSStyle.Foreground.Green)dtop$($PSStyle.Reset)            - Jump to Desktop.
+$($PSStyle.Foreground.Green)cu$($PSStyle.Reset)               - Open current folder in VS Codium.
+$($PSStyle.Foreground.Green)o$($PSStyle.Reset)               - Open current folder in Explorer.
+$($PSStyle.Foreground.Green)cpp$($PSStyle.Reset)             - Copy current path to clipboard.
+$($PSStyle.Foreground.Green)ff <name>$($PSStyle.Reset)       - Find files recursively.
+$($PSStyle.Foreground.Green)touch <file>$($PSStyle.Reset)    - Create empty file.
+$($PSStyle.Foreground.Green)unzip <file>$($PSStyle.Reset)    - Extract zip in current directory.
+
+$($PSStyle.Foreground.Cyan)Network & System$($PSStyle.Reset)
+$($PSStyle.Foreground.Yellow)=======================$($PSStyle.Reset)
+$($PSStyle.Foreground.Green)myip$($PSStyle.Reset)            - Show local IP.
+$($PSStyle.Foreground.Green)pubip$($PSStyle.Reset)           - Show public IP.
+$($PSStyle.Foreground.Green)flush$($PSStyle.Reset)           - Flush DNS cache.
+$($PSStyle.Foreground.Green)ports$($PSStyle.Reset)           - Show listening ports.
+$($PSStyle.Foreground.Green)pgrep <name>$($PSStyle.Reset)    - Search processes.
+$($PSStyle.Foreground.Green)pkill <name>$($PSStyle.Reset)    - Stop process (by name).
+$($PSStyle.Foreground.Green)k9 <name>$($PSStyle.Reset)       - Fast kill process.
+$($PSStyle.Foreground.Green)hq <query>$($PSStyle.Reset)      - Search command history.
+$($PSStyle.Foreground.Green)cls!$($PSStyle.Reset)            - Clear screen and scrollback buffer.
 
 $($PSStyle.Foreground.Cyan)Git Shortcuts$($PSStyle.Reset)
 $($PSStyle.Foreground.Yellow)=======================$($PSStyle.Reset)
-$($PSStyle.Foreground.Green)ga$($PSStyle.Reset) - Shortcut for 'git add .'.
-$($PSStyle.Foreground.Green)gc$($PSStyle.Reset) <message> - Shortcut for 'git commit -m'.
-$($PSStyle.Foreground.Green)gcl$($PSStyle.Reset) <repo> - Shortcut for 'git clone'.
-$($PSStyle.Foreground.Green)gcom$($PSStyle.Reset) <message> - Adds all changes and commits.
-$($PSStyle.Foreground.Green)gpush$($PSStyle.Reset) - Shortcut for 'git push'.
-$($PSStyle.Foreground.Green)gpull$($PSStyle.Reset) - Shortcut for 'git pull'.
-$($PSStyle.Foreground.Green)gs$($PSStyle.Reset) - Shortcut for 'git status'.
-$($PSStyle.Foreground.Green)lazyg$($PSStyle.Reset) <message> - Add, Commit, and Push in one go.
-
-$($PSStyle.Foreground.Cyan)Shortcuts$($PSStyle.Reset)
-$($PSStyle.Foreground.Yellow)=======================$($PSStyle.Reset)
-$($PSStyle.Foreground.Green)docs$($PSStyle.Reset) - Jump to Documents.
-$($PSStyle.Foreground.Green)dtop$($PSStyle.Reset) - Jump to Desktop.
-$($PSStyle.Foreground.Green)ep$($PSStyle.Reset) - Alias for Edit-Profile.
-$($PSStyle.Foreground.Green)ff$($PSStyle.Reset) <name> - Finds files recursively.
-$($PSStyle.Foreground.Green)k9/pkill$($PSStyle.Reset) - Kill processes.
-$($PSStyle.Foreground.Green)la/ll$($PSStyle.Reset) - Enhanced directory listing.
-$($PSStyle.Foreground.Green)mkcd$($PSStyle.Reset) <dir> - Create and enter directory.
-$($PSStyle.Foreground.Green)sysinfo$($PSStyle.Reset) - System details.
-$($PSStyle.Foreground.Green)touch$($PSStyle.Reset) <file> - Create empty file.
-$($PSStyle.Foreground.Green)unzip$($PSStyle.Reset) <file> - Extract zip in place.
+$($PSStyle.Foreground.Green)gs$($PSStyle.Reset)              - git status.
+$($PSStyle.Foreground.Green)ga$($PSStyle.Reset)              - git add .
+$($PSStyle.Foreground.Green)gc <msg>$($PSStyle.Reset)        - git commit -m.
+$($PSStyle.Foreground.Green)gpush$($PSStyle.Reset)           - git push.
+$($PSStyle.Foreground.Green)gpull$($PSStyle.Reset)           - git pull.
+$($PSStyle.Foreground.Green)gcl <repo>$($PSStyle.Reset)      - git clone.
+$($PSStyle.Foreground.Green)gcom <msg>$($PSStyle.Reset)      - git add + commit.
+$($PSStyle.Foreground.Green)lazyg <msg>$($PSStyle.Reset)     - git add + commit + push.
 $($PSStyle.Foreground.Yellow)=======================$($PSStyle.Reset)
 "@
     Write-Host $helpText

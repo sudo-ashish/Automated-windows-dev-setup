@@ -1,32 +1,50 @@
 ﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="winHelp v2 - Professional Windows Orchestrator" Height="850" Width="1100" 
-        WindowStartupLocation="CenterScreen" Background="#121212" Foreground="#E0E0E0" FontFamily="Segoe UI Variable, Segoe UI">
+        Title="Automated Windows Dev Setup" Height="900" Width="1200" ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextPrimary}" FontFamily="Segoe UI">
     <Window.Resources>
-        <!-- Modern Color Palette -->
-        <SolidColorBrush x:Key="WindowBg" Color="#121212"/>
-        <SolidColorBrush x:Key="CardBg" Color="#1E1E1E"/>
-        <SolidColorBrush x:Key="BorderBrush" Color="#333333"/>
-        <SolidColorBrush x:Key="AccentBrush" Color="#0078D4"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#AAAAAA"/>
-        
-        <!-- TabItem Style -->
-        <Style TargetType="TabItem">
+        <!-- Initial Colors (Dark Theme Default) -->
+        <SolidColorBrush x:Key="WindowBackground" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="ControlBackground" Color="#252526"/>
+        <SolidColorBrush x:Key="ControlBorder" Color="#3E3E3E"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#007ACC"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#F1F1F1"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#BBBBBB"/>
+        <SolidColorBrush x:Key="ScrollThumb" Color="#555555"/>
+
+        <!-- Icons -->
+        <!-- Moon (for switching to Dark) -->
+        <PathGeometry x:Key="MoonIcon" Figures="M19.03 15.28C19.35 15.28 19.66 15.3 19.96 15.35L20.67 15.48L20.2 14.9C19.26 13.67 18.77 12.16 18.77 10.61C18.77 6.13 22.41 2.5 26.89 2.5C27 2.5 27.13 2.5 27.24 2.5L28.18 2.57L27.5 1.9C26.3 0.68 24.68 0 22.95 0C18.73 0 15.3 3.43 15.3 7.64C15.3 8.36 15.4 9.07 15.6 9.77C12.45 10.53 10.1 13.36 10.1 16.71C10.1 20.61 13.28 23.78 17.18 23.78C17.81 23.78 18.43 23.7 19.03 15.28Z"/>
+        <!-- Sun (for switching to Light) -->
+        <PathGeometry x:Key="SunIcon" Figures="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z M12 0L12 3M12 21L12 24M3.5 3.5L5.6 5.6M18.4 18.4L20.5 20.5M0 12L3 12M21 12L24 12M3.5 20.5L5.6 18.4M18.4 5.6L20.5 3.5"/>
+
+        <!-- Theme Toggle Style -->
+        <Style x:Key="ThemeToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TabItem">
-                        <Border Name="Border" Background="Transparent" BorderThickness="0,0,0,2" Margin="10,0" Padding="10,15">
-                            <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center"/>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15" Padding="{TemplateBinding Padding}">
+                            <!-- Path Data will be set via DataBinding -->
+                            <Path Name="IconPath" Fill="{DynamicResource TextPrimary}" Stretch="Uniform" Width="20" Height="20"/>
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-                                <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
+                         <ControlTemplate.Triggers>
+                            <!-- IsChecked=True (Dark Mode Active) -> Show Sun (to switch to Light) -->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="IconPath" Property="Data" Value="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42 1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/>
+                                <Setter TargetName="IconPath" Property="Fill" Value="Yellow"/> <!-- Optional: Make sun yellow -->
                             </Trigger>
-                            <Trigger Property="IsSelected" Value="False">
-                                <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                            <!-- IsChecked=False (Light Mode Active) -> Show Moon (to switch to Dark) -->
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="IconPath" Property="Data" Value="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.16,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.84,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>
+                                <Setter TargetName="IconPath" Property="Fill" Value="#444"/> <!-- Dark moon -->
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#33888888"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -34,162 +52,388 @@
             </Setter>
         </Style>
 
-        <!-- Button Styles -->
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#2D2D2D"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
+        <!-- Custom ScrollBar Style (Thin) -->
+        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border CornerRadius="4" Background="{DynamicResource ScrollThumb}" BorderBrush="Transparent" BorderThickness="0" Width="8"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="GridRoot" Width="10" Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" Focusable="false">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBarThumb}"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styles -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        
+        <!-- Modern Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ControlBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="Border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#444444"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource AccentColor}"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Primary Button Style -->
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{DynamicResource AccentColor}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentColor}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0062A3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource TextPrimary}"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
+        <Style TargetType="TabItem">
+            <Setter Property="Background" Value="{DynamicResource ControlBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource ControlBorder}" BorderThickness="1,1,1,0" CornerRadius="4,4,0,0" Margin="2,0,2,0">
+                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="10,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource WindowBackground}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0"/>
+                                <Setter Property="Foreground" Value="{DynamicResource AccentColor}"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource ControlBackground}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextSecondary}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ListView Styles -->
+        <Style TargetType="ListView">
+            <Setter Property="Background" Value="{DynamicResource ControlBackground}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlBorder}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+        </Style>
+        <Style TargetType="ListViewItem">
+             <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <GridViewRowPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ControlBorder}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentColor}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <!-- Title Bar -->
-            <RowDefinition Height="*"/>    <!-- Tabs Content -->
-            <RowDefinition Height="Auto"/> <!-- Status Bar -->
+            <RowDefinition Height="Auto"/> <!-- Header/Toggle Area -->
+            <RowDefinition Height="*"/> <!-- Tabs -->
+            <RowDefinition Height="150"/> <!-- Log Console -->
         </Grid.RowDefinitions>
 
-        <!-- Sidebar-like Top Navigation -->
-        <Border Grid.Row="0" Background="#181818" BorderBrush="#252525" BorderThickness="0,0,0,1">
-            <Grid Margin="20,10">
-                <TextBlock Text="winHelp v2" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}"/>
-                <TabControl Name="MainTabControl" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right">
-                    <TabItem Header="SETUP / INSTALL" Name="TabSetup"/>
-                    <TabItem Header="GIT &amp; GITHUB" Name="TabGit"/>
-                    <TabItem Header="SYSTEM &amp; SAFETY" Name="TabSystem"/>
-                    <TabItem Header="SETTINGS" Name="TabSettings"/>
-                    <TabItem Header="LOGS" Name="TabLogs"/>
-                </TabControl>
-            </Grid>
-        </Border>
-
-        <!-- Main Content Area -->
-        <Grid Grid.Row="1" Margin="30">
-            <!-- Dynamic Content based on Selection -->
-            <ContentControl Name="TabContent">
-                <!-- We will switch this content in PS, but here is the definition of the actual grids -->
-            </ContentControl>
-
-            <!-- Embedded Tab Grids (Hidden by default, shown via UIManager) -->
-            <Grid Name="GridSetup" Visibility="Visible">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Software Installation" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,20"/>
-                <Border Grid.Row="1" Background="{StaticResource CardBg}" CornerRadius="8" Padding="20">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <WrapPanel Name="AppCheckPanel"/>
-                    </ScrollViewer>
-                </Border>
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                    <Button Name="InstallAppsBtn" Content="Install Selected Apps" Background="{StaticResource AccentBrush}" Width="200" Height="45"/>
-                </StackPanel>
-            </Grid>
-
-            <Grid Name="GridGit" Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Margin="0,0,20,0">
-                    <TextBlock Text="Git Identity" FontSize="22" Margin="0,0,0,15"/>
-                    <Border Background="{StaticResource CardBg}" Padding="20" CornerRadius="8">
-                        <StackPanel>
-                            <TextBlock Text="Global User Name" Margin="0,0,0,5" Foreground="{StaticResource TextSecondary}"/>
-                            <TextBox Name="GitNameBox" Background="#252525" Padding="10" BorderThickness="0" Margin="0,0,0,15"/>
-                            <TextBlock Text="Global User Email" Margin="0,0,0,5" Foreground="{StaticResource TextSecondary}"/>
-                            <TextBox Name="GitEmailBox" Background="#252525" Padding="10" BorderThickness="0" Margin="0,0,0,20"/>
-                            <Button Name="SaveGitConfigBtn" Content="Save Identity" HorizontalAlignment="Left" Width="150"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="Repository Management" FontSize="22" Margin="0,0,0,15"/>
-                    <Border Background="{StaticResource CardBg}" Padding="20" CornerRadius="8" Height="400">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Button Name="FetchReposBtn" Content="Fetch Repositories" Margin="0,0,0,15"/>
-                            <ListView Name="RepoListView" Grid.Row="1" Background="Transparent" BorderThickness="0">
-                                <!-- Template set in PS -->
-                            </ListView>
-                            <Button Name="CloneReposBtn" Grid.Row="2" Content="Clone Selected" Background="{StaticResource AccentBrush}" Margin="0,15,0,0"/>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-            </Grid>
-
-            <Grid Name="GridSystem" Visibility="Collapsed">
-                 <UniformGrid Columns="2" Rows="2">
-                    <Border Background="{StaticResource CardBg}" Margin="10" Padding="20" CornerRadius="8">
-                        <StackPanel>
-                            <TextBlock Text="Debloat Windows" FontSize="18" Margin="0,0,0,10"/>
-                            <CheckBox Name="DebloatTelemetry" Content="Telemetry &amp; Data" IsChecked="True" Margin="0,5"/>
-                            <CheckBox Name="DebloatApps" Content="Preinstalled Apps" IsChecked="True" Margin="0,5"/>
-                            <CheckBox Name="DebloatBing" Content="Bing Start Search" IsChecked="True" Margin="0,5"/>
-                            <Button Name="RunDebloatBtn" Content="Run Optimizations" Margin="0,15,0,0" Background="{StaticResource AccentBrush}"/>
-                        </StackPanel>
-                    </Border>
-                    <Border Background="{StaticResource CardBg}" Margin="10" Padding="20" CornerRadius="8">
-                        <StackPanel>
-                            <TextBlock Text="Backup &amp; Restore" FontSize="18" Margin="0,0,0,10"/>
-                            <Button Name="ExportBtn" Content="Export Snapshot" Margin="0,5"/>
-                            <Button Name="ImportBtn" Content="Restore Snapshot" Margin="0,5"/>
-                        </StackPanel>
-                    </Border>
-                    <Border Background="{StaticResource CardBg}" Margin="10" Padding="20" CornerRadius="8">
-                        <StackPanel>
-                            <TextBlock Text="System Updates" FontSize="18" Margin="0,0,0,10"/>
-                            <Button Name="RunUpdateBtn" Content="Check for Updates" Margin="0,5"/>
-                        </StackPanel>
-                    </Border>
-                 </UniformGrid>
-            </Grid>
-
-            <Grid Name="GridSettings" Visibility="Collapsed">
-                <TextBlock Text="Application Settings" FontSize="24" Margin="0,0,0,20"/>
-                <Border Background="{StaticResource CardBg}" Padding="20" CornerRadius="8">
-                    <StackPanel>
-                        <TextBlock Text="Log Level" Foreground="{StaticResource TextSecondary}"/>
-                        <ComboBox Name="LogLevelSelector" Margin="0,5,0,20"/>
-                        <TextBlock Text="Backup Directory" Foreground="{StaticResource TextSecondary}"/>
-                        <TextBox Name="BackupPathBox" Background="#252525" Padding="10" BorderThickness="0" Margin="0,5,0,20"/>
-                        <Button Name="SaveSettingsBtn" Content="Apply All Changes" Background="{StaticResource AccentBrush}" Width="200"/>
-                    </StackPanel>
-                </Border>
-            </Grid>
-
-            <Grid Name="GridLogs" Visibility="Collapsed">
-                <Border Background="Black" CornerRadius="8" Padding="15">
-                     <TextBox Name="LogBox" IsReadOnly="True" Background="Transparent" Foreground="#00FF00" 
-                             FontFamily="Consolas" FontSize="12" BorderThickness="0" AcceptsReturn="True"
-                             VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
-                </Border>
-            </Grid>
+        <!-- Header / Toggle -->
+        <Grid Grid.Row="0" Margin="0,0,10,0" Panel.ZIndex="1000">
+             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,10,0">
+                <Button Name="RestartBtn" Content="Reload Script" FontSize="10" Padding="5,2" Margin="0,0,10,0" Height="25" Background="Transparent" Foreground="{DynamicResource TextSecondary}" BorderThickness="1"/>
+                <ToggleButton Name="ThemeToggle" Style="{StaticResource ThemeToggleStyle}" IsChecked="True" ToolTip="Toggle Theme"/> 
+            </StackPanel>
         </Grid>
 
-        <!-- Footer / Status Bar -->
-        <Border Grid.Row="2" Background="#181818" Padding="20,10" BorderBrush="#252525" BorderThickness="0,1,0,0">
-            <Grid>
-                <TextBlock Name="StatusIndicator" Text="Ready" VerticalAlignment="Center" Foreground="{StaticResource TextSecondary}"/>
-                <ProgressBar Name="GlobalProgress" IsIndeterminate="False" Height="4" VerticalAlignment="Bottom" Margin="0,0,0,-10" Visibility="Collapsed"/>
-            </Grid>
+        <TabControl Grid.Row="1" Margin="0,-35,0,0" Panel.ZIndex="1">
+            <!-- TAB 1: SOFTWARE -->
+            <TabItem Header="Software">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Select Applications to Install" FontSize="15" Foreground="{DynamicResource AccentColor}" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                            <Button Name="SelectAllAppsBtn" Content="Select All" Width="100" Margin="0,0,5,0"/>
+                            <Button Name="DeselectAllAppsBtn" Content="Deselect All" Width="100"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <WrapPanel Name="AppCheckPanel"/>
+                        </ScrollViewer>
+                    </Border>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="Opens a new PowerShell window for installation" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,0,10,0"/>
+                        <Button Name="InstallAppsBtn" Style="{StaticResource PrimaryButton}" Content="Install Selected" Width="150"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- TAB 2: SETUP -->
+            <TabItem Header="Setup">
+                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,5,0">
+                    <Grid Margin="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Left Column: Forms -->
+                        <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                            <Border Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10" Margin="0,0,0,15">
+                                <StackPanel>
+                                    <Label Content="Git Configuration" FontSize="15" Margin="0,0,0,5" Foreground="{DynamicResource AccentColor}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Name:" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Name="GitNameBox" Text="User Name" Margin="0,0,0,10"/>
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Email:" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Name="GitEmailBox" Text="user@email.com"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10" Margin="0,0,0,15">
+                                <StackPanel>
+                                    <Label Content="Font Selection (Nerd Fonts)" FontSize="15" Margin="0,0,0,5" Foreground="{DynamicResource AccentColor}"/>
+                                    <ComboBox Name="FontSelector" SelectedIndex="0">
+                                        <ComboBoxItem Content="JetBrainsMono"/>
+                                        <ComboBoxItem Content="CascadiaCode"/>
+                                        <ComboBoxItem Content="FiraCode"/>
+                                        <ComboBoxItem Content="Meslo"/>
+                                    </ComboBox>
+                                </StackPanel>
+                            </Border>
+
+
+                        </StackPanel>
+
+                        <!-- Right Column: Components -->
+                        <Border Grid.Column="1" Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10">
+                            <StackPanel>
+                                <Label Content="Environment Config" FontSize="15" Margin="0,0,0,10" Foreground="{DynamicResource AccentColor}"/>
+                                <StackPanel>
+                                    <CheckBox Name="Step2a" Content="2a. Git Config &amp; Tools (GH CLI, FZF)"/>
+                                    <CheckBox Name="Step2b" Content="2b. GitHub Auth Login"/>
+                                    <CheckBox Name="Step3" Content="3. Install Selected Nerd Font"/>
+                                    <CheckBox Name="Step4" Content="4. VSCodium Extensions"/>
+                                    <CheckBox Name="Step5" Content="5. VSCodium Settings"/>
+                                    <CheckBox Name="Step6" Content="6. Antigravity Extensions"/>
+                                    <CheckBox Name="Step7" Content="7. Antigravity Settings"/>
+                                    <CheckBox Name="Step8" Content="8. Merge Terminal Defaults"/>
+                                    <CheckBox Name="Step9" Content="9. Neovim Config"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                                    <Button Name="SelectAllStepsBtn" Content="Select All" Width="100" Margin="0,0,5,0"/>
+                                    <Button Name="DeselectAllStepsBtn" Content="Deselect All" Width="100"/>
+                                </StackPanel>
+                                
+                                <Separator Background="{DynamicResource ControlBorder}" Margin="0,15"/>
+                                <Button Name="RunSetupBtn" Style="{StaticResource PrimaryButton}" Content="Execute Selected Setup" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- TAB 3: GITHUB REPOS -->
+            <TabItem Header="GitHub Repos">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Border Grid.Row="0" Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="FetchReposBtn" Content="Fetch Repositories" Width="150" Margin="0,0,15,0"/>
+                            <TextBlock Text="Use 'gh auth login' first. Fetching may take a moment." VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <ListView Grid.Row="1" Name="RepoListView" Margin="0,0,0,10">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Select" Width="60">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Center" Margin="5,0"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Repository Name" Width="400" DisplayMemberBinding="{Binding Display}"/>
+                                <GridViewColumn Header="URL" Width="250" DisplayMemberBinding="{Binding Url}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Content="Target: ~/Documents/github-repo" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,0,10,0"/>
+                        <Button Name="CloneReposBtn" Style="{StaticResource PrimaryButton}" Content="Clone Selected" Width="150"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- TAB 4: BACKUP -->
+            <TabItem Header="Backup/Restore">
+                <Grid Margin="15">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource ControlBackground}" CornerRadius="8" Padding="30">
+                            <StackPanel>
+                                <Label Content="System Settings Backup" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="{DynamicResource AccentColor}"/>
+                                
+                                <StackPanel Orientation="Vertical" Margin="0,0,0,20" HorizontalAlignment="Center">
+                                    <CheckBox Name="BackupTheme" Content="Theme &amp; Personalization" IsChecked="True"/>
+                                    <CheckBox Name="BackupExplorer" Content="Explorer &amp; Search" IsChecked="True"/>
+                                    <CheckBox Name="BackupMouse" Content="Mouse &amp; Touchpad" IsChecked="True"/>
+                                    <CheckBox Name="BackupProfile" Content="PowerShell Profile" IsChecked="True"/>
+                                </StackPanel>
+
+                                <Button Name="ExportBtn" Content="Export Selected (Backup)" Width="280" Height="40" Margin="0,0,0,10"/>
+                                <TextBlock Text="Saves selected settings to local folder." HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,30"/>
+                                
+                                <Button Name="ImportBtn" Content="Import Selected (Restore)" Width="280" Height="40" Background="#A03030" BorderBrush="#A03030"/>
+                                <TextBlock Text="Restores selected settings from local folder." HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- TAB 5: DEBLOAT -->
+            <TabItem Header="System Debloat">
+                <Grid Margin="15">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource ControlBackground}" CornerRadius="8" Padding="30">
+                            <StackPanel Width="350">
+                                <Label Content="Windows Debloater" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="{DynamicResource AccentColor}"/>
+                                
+                                <StackPanel Margin="0,0,0,20">
+                                    <CheckBox Name="DebloatTelemetry" Content="Disable Telemetry &amp; Data Collection" IsChecked="True"/>
+                                    <CheckBox Name="DebloatApps" Content="Remove Preinstalled Bloatware Apps" IsChecked="True"/>
+                                    <CheckBox Name="DebloatBing" Content="Disable Bing Search in Start Menu" IsChecked="True"/>
+                                </StackPanel>
+
+                                <Button Name="RunDebloatBtn" Style="{StaticResource PrimaryButton}" Content="Run Debloater" Height="45"/>
+                                <TextBlock Text="Note: Requires Administrator privileges." HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- Log Console Area -->
+        <Border Grid.Row="2" BorderBrush="{DynamicResource AccentColor}" BorderThickness="0,1,0,0" Background="Black">
+            <TextBox Name="LogBox" IsReadOnly="True" Background="#0F0F0F" Foreground="#00FF00" FontFamily="Consolas" FontSize="13" 
+                     VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" BorderThickness="0" Padding="8"/>
         </Border>
     </Grid>
 </Window>

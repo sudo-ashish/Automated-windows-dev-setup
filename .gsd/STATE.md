@@ -8,18 +8,13 @@ Project "winHelp Refactor" initialized.
 - Infrastructure (.gsd files) set up.
 
 ## Current Position
-- **Phase**: 5 (Planning)
-- **Task**: Bootstrap & GUI v2 Extension
-- **Status**: Planning technical architecture
+- **Phase**: 4 (Completed)
+- **Task**: UI Integration & Final Polish finished
+- **Status**: Project Modernization Complete
 
 ## Last Session Summary
-Phase 4 completed. Unified modular architecture established with CLI/GUI support.
-Now extending to support remote bootstrapping and a professional UI v2 redesign.
-
-## Next Steps
-1. Finalize `implementation_plan.md` for Phase 5.
-2. Implement `bootstrap.ps1`.
-3. Redesign UI XAML.
+Phase 4 successfully completed. WPF UI ported to modular backend, Debloat tab added, legacy script `setup.ps1` archived, and `README.md` updated.
+Project is now fully modular, configurable via `config.json`, and supports both CLI and GUI.
 
 ## Next Steps
 1. /execute 4
