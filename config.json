@@ -1,0 +1,25 @@
+{
+  "project": "winHelp",
+  "version": "2.0.0",
+  "features": {
+    "software_install": true,
+    "debloat": true,
+    "backup_restore": true,
+    "system_setup": true
+  },
+  "settings": {
+    "log_level": "INFO",
+    "theme": "Dark",
+    "backup_dir": "system-backup"
+  },
+  "modules": {
+    "debloat": {
+      "remove_preinstalled_apps": true,
+      "remove_onedrive": true,
+      "windows_feature_cleanup": false
+    },
+    "software": {
+      "installer": "winget"
+    }
+  }
+}
