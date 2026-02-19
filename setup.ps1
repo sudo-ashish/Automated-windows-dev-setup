@@ -18,13 +18,48 @@ $ScriptDir = $PSScriptRoot
 # Ensure WPF (PresentationFramework) is loaded
 try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF not supported."; exit }
 
+# =========================================================================
+# APPLICATION LIST — Edit this array to add/remove software
+# To add a new app, copy one line and change Name, Id, and Source.
+#   Name   = Display label shown in the GUI
+#   Id     = WinGet package identifier (run 'winget search <name>' to find it)
+#   Source = "winget" for most packages, "msstore" for Microsoft Store apps
+# =========================================================================
+$AppDefinitions = @(
+    @{ Name = "Brave";        Id = "Brave.Brave";              Source = "winget" },
+    @{ Name = "Wintoys";      Id = "9P8LTPGCBZXD";             Source = "msstore" },
+    @{ Name = "Fastfetch";    Id = "Fastfetch-cli.Fastfetch";  Source = "winget" },
+    @{ Name = "VSCodium";     Id = "VSCodium.VSCodium";        Source = "winget" },
+    @{ Name = "Discord";      Id = "Discord.Discord";          Source = "winget" },
+    @{ Name = "SharpKeys";    Id = "RandyRants.SharpKeys";     Source = "winget" },
+    @{ Name = "LocalSend";    Id = "LocalSend.LocalSend";      Source = "winget" },
+    @{ Name = "Node.js";      Id = "OpenJS.NodeJS";            Source = "winget" },
+    @{ Name = "Google Chrome"; Id = "Google.Chrome";            Source = "winget" },
+    @{ Name = "Spotify";      Id = "Spotify.Spotify";          Source = "winget" },
+    @{ Name = "Helium";       Id = "ImputNet.Helium";          Source = "winget" },
+    @{ Name = "Obsidian";     Id = "Obsidian.Obsidian";        Source = "winget" },
+    @{ Name = "Antigravity";  Id = "Google.Antigravity";       Source = "winget" },
+    @{ Name = "PowerShell";   Id = "Microsoft.PowerShell";     Source = "winget" },
+    @{ Name = "PowerToys";    Id = "Microsoft.PowerToys";      Source = "winget" },
+    @{ Name = "Zen Browser";  Id = "Zen-Team.Zen-Browser";     Source = "winget" },
+    @{ Name = "Git";          Id = "Git.Git";                  Source = "winget" },
+    @{ Name = "Python 3.14";  Id = "Python.Python.3.14";       Source = "winget" },
+    @{ Name = "Steam";        Id = "Valve.Steam";              Source = "winget" },
+    @{ Name = "Vim";          Id = "vim.vim";                  Source = "winget" },
+    @{ Name = "VScode";       Id = "Microsoft.VisualStudioCode";      Source = "winget" },
+    @{ Name = "Cursor";       Id = "Anysphere.Cursor";        Source = "winget" },
+    @{ Name = "AutoHotKey";       Id = "AutoHotkey.AutoHotkey";       Source = "winget" },
+    @{ Name = "Chromium";       Id = "Hibbiki.Chromium";       Source = "winget" },
+    @{ Name = "Neovim";       Id = "Neovim.Neovim";            Source = "winget" }
+)
+
 # -------------------------------------------------------------------------
 # XAML - GUI Definition
 # -------------------------------------------------------------------------
 [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Automated Windows Dev Setup" Height="600" Width="800" ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
+        Title="Automated Windows Dev Setup" Height="900" Width="1200" ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
         Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextPrimary}" FontFamily="Segoe UI">
     <Window.Resources>
         <!-- Initial Colors (Dark Theme Default) -->
@@ -259,7 +294,37 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
         </Grid>
 
         <TabControl Grid.Row="1" Margin="0,-35,0,0" Panel.ZIndex="1">
-            <!-- TAB 1: SETUP -->
+            <!-- TAB 1: SOFTWARE -->
+            <TabItem Header="Software">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Select Applications to Install" FontSize="15" Foreground="{DynamicResource AccentColor}" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                            <Button Name="SelectAllAppsBtn" Content="Select All" Width="100" Margin="0,0,5,0"/>
+                            <Button Name="DeselectAllAppsBtn" Content="Deselect All" Width="100"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1" Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <WrapPanel Name="AppCheckPanel"/>
+                        </ScrollViewer>
+                    </Border>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="Opens a new PowerShell window for installation" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}" Margin="0,0,10,0"/>
+                        <Button Name="InstallAppsBtn" Style="{StaticResource PrimaryButton}" Content="Install Selected" Width="150"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- TAB 2: SETUP -->
             <TabItem Header="Setup">
                  <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,5,0">
                     <Grid Margin="15">
@@ -304,13 +369,7 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
                                 </StackPanel>
                             </Border>
 
-                            <Border Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10">
-                                <StackPanel>
-                                    <Label Content="Core Installations" FontSize="15" Margin="0,0,0,5" Foreground="{DynamicResource AccentColor}"/>
-                                    <CheckBox Name="Step1" Content="1. Basic InstallScript (Non-Admin)"/>
-                                    <TextBlock Text="     (Chrome, VSCode, Node, etc.)" Foreground="{DynamicResource TextSecondary}" FontSize="12" Margin="5,-3,0,10"/>
-                                </StackPanel>
-                            </Border>
+
                         </StackPanel>
 
                         <!-- Right Column: Components -->
@@ -337,7 +396,7 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
                 </ScrollViewer>
             </TabItem>
 
-            <!-- TAB 2: GITHUB REPOS -->
+            <!-- TAB 3: GITHUB REPOS -->
             <TabItem Header="GitHub Repos">
                 <Grid Margin="15">
                     <Grid.RowDefinitions>
@@ -376,7 +435,7 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
                 </Grid>
             </TabItem>
 
-            <!-- TAB 3: BACKUP -->
+            <!-- TAB 4: BACKUP -->
             <TabItem Header="Backup/Restore">
                 <Grid Margin="15">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -430,29 +489,6 @@ function Test-Admin {
     return $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-function Invoke-Step1 {
-    Log "Running Step 1 (InstallScript)..."
-    $installScript = Join-Path $ScriptDir "InstallScript.ps1"
-    
-    if (Test-Path $installScript) {
-        if (Test-Admin) {
-            Log "Running as Admin. Launching Step 1 de-elevated (via Explorer)..."
-            $tempBatch = Join-Path $env:TEMP ("InstallStep1_" + [Guid]::NewGuid() + ".bat")
-            $cmd = "@echo off`r`npowershell -NoProfile -ExecutionPolicy Bypass -File `"$installScript`"`r`npause"
-            Set-Content -Path $tempBatch -Value $cmd
-            Start-Process "explorer.exe" -ArgumentList "`"$tempBatch`""
-            Log "Step 1 process launched in new window."
-        }
-        else {
-            try {
-                & $installScript
-                Log "Step 1 Completed."
-            }
-            catch { Log "Step 1 Failed: $_" }
-        }
-    }
-    else { Log "Error: InstallScript.ps1 not found." }
-}
 
 function New-Brush {
     param([string]$Hex)
@@ -470,15 +506,27 @@ try {
 
     # Locate Controls
     $controls = @("GitNameBox", "GitEmailBox", "FontSelector", 
-        "Step1", "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9",
+        "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9",
         "RunSetupBtn", 
         "FetchReposBtn", "RepoListView", "CloneReposBtn",
         "ExportBtn", "ImportBtn", "BackupTheme", "BackupExplorer", "BackupMouse", "BackupProfile",
-        "LogBox", "ThemeToggle", "RestartBtn")
+        "LogBox", "ThemeToggle", "RestartBtn",
+        "AppCheckPanel", "SelectAllAppsBtn", "DeselectAllAppsBtn", "InstallAppsBtn")
     
     $gui = @{}
     foreach ($id in $controls) {
         $gui[$id] = $Window.FindName($id)
+    }
+
+    # Dynamically create app checkboxes from $AppDefinitions
+    $AppCheckboxes = @{}
+    foreach ($app in $AppDefinitions) {
+        $cb = New-Object System.Windows.Controls.CheckBox
+        $cb.Content = $app.Name
+        $cb.Width = 220
+        $cb.Margin = [System.Windows.Thickness]::new(5)
+        $gui["AppCheckPanel"].Children.Add($cb) | Out-Null
+        $AppCheckboxes[$app.Id] = $cb
     }
 
     # Theme Switching Logic
@@ -518,7 +566,133 @@ try {
         })
 
     # ------------------
-    # TAB 1: SETUP
+    # TAB 1: SOFTWARE
+    # ------------------
+
+    $gui["SelectAllAppsBtn"].Add_Click({
+        foreach ($cb in $AppCheckboxes.Values) {
+            $cb.IsChecked = $true
+        }
+        Log "All apps selected."
+    })
+
+    $gui["DeselectAllAppsBtn"].Add_Click({
+        foreach ($cb in $AppCheckboxes.Values) {
+            $cb.IsChecked = $false
+        }
+        Log "All apps deselected."
+    })
+
+    $gui["InstallAppsBtn"].Add_Click({
+        $selectedApps = @()
+        foreach ($app in $AppDefinitions) {
+            if ($AppCheckboxes[$app.Id].IsChecked) {
+                $selectedApps += $app
+            }
+        }
+
+        if ($selectedApps.Count -eq 0) {
+            Log "No apps selected for installation."
+            [System.Windows.MessageBox]::Show("No apps selected.", "Info")
+            return
+        }
+
+        Log "Generating install script for $($selectedApps.Count) app(s)..."
+
+        # Build WinGet install commands
+        $installCmds = @()
+        $appNames = @()
+        foreach ($app in $selectedApps) {
+            $installCmds += "cmd.exe /C winget.exe install --id `"$($app.Id)`" --exact --source $($app.Source) --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force"
+            $appNames += $app.Name
+        }
+
+        # Build script as array of lines
+        $lines = [System.Collections.ArrayList]::new()
+        [void]$lines.Add('Clear-Host')
+        [void]$lines.Add('Write-Host ""')
+        [void]$lines.Add('Write-Host "========================================================"')
+        [void]$lines.Add('Write-Host "        WinGet Package Installer (Selected Apps)"')
+        [void]$lines.Add('Write-Host "========================================================"')
+        [void]$lines.Add('Write-Host ""')
+        [void]$lines.Add('Write-Host "This script will install the following packages:"')
+        foreach ($name in $appNames) {
+            [void]$lines.Add("Write-Host `"  - $name`"")
+        }
+        [void]$lines.Add('Write-Host ""')
+        [void]$lines.Add('pause')
+        [void]$lines.Add('Clear-Host')
+        [void]$lines.Add('')
+        [void]$lines.Add('$success_count=0')
+        [void]$lines.Add('$failure_count=0')
+        [void]$lines.Add('$commands_run=0')
+        [void]$lines.Add('$results=""')
+        [void]$lines.Add('')
+
+        # Commands array
+        [void]$lines.Add('$commands = @(')
+        for ($i = 0; $i -lt $installCmds.Count; $i++) {
+            $sep = if ($i -lt $installCmds.Count - 1) { "," } else { "" }
+            [void]$lines.Add("    '$($installCmds[$i])'$sep")
+        }
+        [void]$lines.Add(')')
+        [void]$lines.Add('')
+
+        # Execution loop
+        [void]$lines.Add('foreach ($command in $commands) {')
+        [void]$lines.Add('    Write-Host "Running: $command" -ForegroundColor Yellow')
+        [void]$lines.Add('    cmd.exe /C $command')
+        [void]$lines.Add('    if ($LASTEXITCODE -eq 0) {')
+        [void]$lines.Add('        Write-Host "[  OK  ] $command" -ForegroundColor Green')
+        [void]$lines.Add('        $success_count++')
+        [void]$lines.Add('        $results += "$([char]0x1b)[32m[  OK  ] $command`n"')
+        [void]$lines.Add('    }')
+        [void]$lines.Add('    else {')
+        [void]$lines.Add('        Write-Host "[ FAIL ] $command" -ForegroundColor Red')
+        [void]$lines.Add('        $failure_count++')
+        [void]$lines.Add('        $results += "$([char]0x1b)[31m[ FAIL ] $command`n"')
+        [void]$lines.Add('    }')
+        [void]$lines.Add('    $commands_run++')
+        [void]$lines.Add('    Write-Host ""')
+        [void]$lines.Add('}')
+        [void]$lines.Add('')
+
+        # Summary
+        [void]$lines.Add('Write-Host "========================================================"')
+        [void]$lines.Add('Write-Host "                  OPERATION SUMMARY"')
+        [void]$lines.Add('Write-Host "========================================================"')
+        [void]$lines.Add('Write-Host "Total commands run: $commands_run"')
+        [void]$lines.Add('Write-Host "Successful: $success_count"')
+        [void]$lines.Add('Write-Host "Failed: $failure_count"')
+        [void]$lines.Add('Write-Host ""')
+        [void]$lines.Add('Write-Host "Details:"')
+        [void]$lines.Add('Write-Host "$results$([char]0x1b)[37m"')
+        [void]$lines.Add('Write-Host "========================================================"')
+        [void]$lines.Add('')
+        [void]$lines.Add('if ($failure_count -gt 0) {')
+        [void]$lines.Add('    Write-Host "Some commands failed. Please check the log above." -ForegroundColor Yellow')
+        [void]$lines.Add('}')
+        [void]$lines.Add('else {')
+        [void]$lines.Add('    Write-Host "All commands executed successfully!" -ForegroundColor Green')
+        [void]$lines.Add('}')
+        [void]$lines.Add('Write-Host ""')
+        [void]$lines.Add('pause')
+
+        # Write to temp file
+        $tempScript = Join-Path $env:TEMP ("WinGetInstall_" + [Guid]::NewGuid() + ".ps1")
+        $lines | Out-File -FilePath $tempScript -Encoding UTF8
+
+        # Launch in non-admin PowerShell window via explorer.exe (de-elevate)
+        $tempBatch = Join-Path $env:TEMP ("WinGetInstall_" + [Guid]::NewGuid() + ".bat")
+        $batchCmd = "@echo off`r`npowershell -NoProfile -ExecutionPolicy Bypass -File `"$tempScript`""
+        Set-Content -Path $tempBatch -Value $batchCmd
+        Start-Process "explorer.exe" -ArgumentList "`"$tempBatch`""
+
+        Log "Install script launched in new window for $($selectedApps.Count) app(s)."
+    })
+
+    # ------------------
+    # TAB 2: SETUP
     # ------------------
     $gui["RunSetupBtn"].Add_Click({
             if (-not (Test-Admin)) {
@@ -526,8 +700,7 @@ try {
             }
             [System.Windows.Threading.Dispatcher]::CurrentDispatcher.Invoke([Action] {}, [System.Windows.Threading.DispatcherPriority]::Render)
         
-            # Step 1
-            if ($gui["Step1"].IsChecked) { Invoke-Step1 }
+
 
             # Step 2a: Git Config & Tools
             if ($gui["Step2a"].IsChecked) {
