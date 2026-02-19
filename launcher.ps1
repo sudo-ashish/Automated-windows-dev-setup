@@ -26,9 +26,9 @@ param(
 )
 
 # 1. Initialize Paths & Core Utilities
-$PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-. (Join-Path $PSScriptRoot "src/core/Logger.ps1")
-. (Join-Path $PSScriptRoot "src/core/Config.ps1")
+$AppRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $AppRoot "src/core/Logger.ps1")
+. (Join-Path $AppRoot "src/core/Config.ps1")
 
 Write-Log "winHelp Launcher starting..." -Level INFO
 
@@ -61,7 +61,7 @@ else {
 # 5. Execute Modules (Headless/CLI path)
 if ($ModulesToRun.Count -gt 0) {
     foreach ($ModuleName in $ModulesToRun) {
-        $ModulePath = Join-Path $PSScriptRoot "src/modules/$ModuleName.ps1"
+        $ModulePath = Join-Path $AppRoot "src/modules/$ModuleName.ps1"
         if (Test-Path $ModulePath) {
             Write-Log "Executing module: $ModuleName" -Level INFO
             . $ModulePath
