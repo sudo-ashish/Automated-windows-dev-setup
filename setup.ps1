@@ -349,10 +349,10 @@ $AppDefinitions = @(
                                         </Grid.RowDefinitions>
                                         
                                         <Label Grid.Row="0" Grid.Column="0" Content="Name:" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
-                                        <TextBox Grid.Row="0" Grid.Column="1" Name="GitNameBox" Text="Ashish" Margin="0,0,0,10"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1" Name="GitNameBox" Text="User Name" Margin="0,0,0,10"/>
                                         
                                         <Label Grid.Row="1" Grid.Column="0" Content="Email:" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Name="GitEmailBox" Text="ashish@email.com"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Name="GitEmailBox" Text="user@email.com"/>
                                     </Grid>
                                 </StackPanel>
                             </Border>
