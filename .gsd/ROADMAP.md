@@ -30,6 +30,11 @@
 **Requirements**: REQ-07, REQ-05
 
 ### Phase 4: UI Integration & Polish
-**Status**: ⬜ Not Started
+**Status**: ✅ Completed
 **Objective**: Build/Port the WPF UI to hook into the new modular orchestrator. Finalize documentation, examples, and performance tuning.
 **Requirements**: REQ-04
+
+### Phase 5: Bootstrap & GUI v2
+**Status**: 🚧 In Progress
+**Objective**: Implement `bootstrap.ps1`, reorganize modules into logical groups, and redesign the GUI for v2.
+**Requirements**: REQ-08 (Installation), REQ-09 (UX/UI v2)
