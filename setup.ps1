@@ -26,31 +26,32 @@ try { Add-Type -AssemblyName PresentationFramework } catch { Write-Warning "WPF 
 #   Source = "winget" for most packages, "msstore" for Microsoft Store apps
 # =========================================================================
 $AppDefinitions = @(
-    @{ Name = "Brave";        Id = "Brave.Brave";              Source = "winget" },
-    @{ Name = "Wintoys";      Id = "9P8LTPGCBZXD";             Source = "msstore" },
-    @{ Name = "Fastfetch";    Id = "Fastfetch-cli.Fastfetch";  Source = "winget" },
-    @{ Name = "VSCodium";     Id = "VSCodium.VSCodium";        Source = "winget" },
-    @{ Name = "Discord";      Id = "Discord.Discord";          Source = "winget" },
-    @{ Name = "SharpKeys";    Id = "RandyRants.SharpKeys";     Source = "winget" },
-    @{ Name = "LocalSend";    Id = "LocalSend.LocalSend";      Source = "winget" },
-    @{ Name = "Node.js";      Id = "OpenJS.NodeJS";            Source = "winget" },
-    @{ Name = "Google Chrome"; Id = "Google.Chrome";            Source = "winget" },
-    @{ Name = "Spotify";      Id = "Spotify.Spotify";          Source = "winget" },
-    @{ Name = "Helium";       Id = "ImputNet.Helium";          Source = "winget" },
-    @{ Name = "Obsidian";     Id = "Obsidian.Obsidian";        Source = "winget" },
-    @{ Name = "Antigravity";  Id = "Google.Antigravity";       Source = "winget" },
-    @{ Name = "PowerShell";   Id = "Microsoft.PowerShell";     Source = "winget" },
-    @{ Name = "PowerToys";    Id = "Microsoft.PowerToys";      Source = "winget" },
-    @{ Name = "Zen Browser";  Id = "Zen-Team.Zen-Browser";     Source = "winget" },
-    @{ Name = "Git";          Id = "Git.Git";                  Source = "winget" },
-    @{ Name = "Python 3.14";  Id = "Python.Python.3.14";       Source = "winget" },
-    @{ Name = "Steam";        Id = "Valve.Steam";              Source = "winget" },
-    @{ Name = "Vim";          Id = "vim.vim";                  Source = "winget" },
-    @{ Name = "VScode";       Id = "Microsoft.VisualStudioCode";      Source = "winget" },
-    @{ Name = "Cursor";       Id = "Anysphere.Cursor";        Source = "winget" },
-    @{ Name = "AutoHotKey";       Id = "AutoHotkey.AutoHotkey";       Source = "winget" },
-    @{ Name = "Chromium";       Id = "Hibbiki.Chromium";       Source = "winget" },
-    @{ Name = "Neovim";       Id = "Neovim.Neovim";            Source = "winget" }
+    @{ Name = "Brave"; Id = "Brave.Brave"; Source = "winget" },
+    @{ Name = "Wintoys"; Id = "9P8LTPGCBZXD"; Source = "msstore" },
+    @{ Name = "Fastfetch"; Id = "Fastfetch-cli.Fastfetch"; Source = "winget" },
+    @{ Name = "VSCodium"; Id = "VSCodium.VSCodium"; Source = "winget" },
+    @{ Name = "Discord"; Id = "Discord.Discord"; Source = "winget" },
+    @{ Name = "SharpKeys"; Id = "RandyRants.SharpKeys"; Source = "winget" },
+    @{ Name = "LocalSend"; Id = "LocalSend.LocalSend"; Source = "winget" },
+    @{ Name = "Node.js"; Id = "OpenJS.NodeJS"; Source = "winget" },
+    @{ Name = "Google Chrome"; Id = "Google.Chrome"; Source = "winget" },
+    @{ Name = "Spotify"; Id = "Spotify.Spotify"; Source = "winget" },
+    @{ Name = "Helium"; Id = "ImputNet.Helium"; Source = "winget" },
+    @{ Name = "Obsidian"; Id = "Obsidian.Obsidian"; Source = "winget" },
+    @{ Name = "Antigravity"; Id = "Google.Antigravity"; Source = "winget" },
+    @{ Name = "PowerShell"; Id = "Microsoft.PowerShell"; Source = "winget" },
+    @{ Name = "PowerToys"; Id = "Microsoft.PowerToys"; Source = "winget" },
+    @{ Name = "Zen Browser"; Id = "Zen-Team.Zen-Browser"; Source = "winget" },
+    @{ Name = "Git"; Id = "Git.Git"; Source = "winget" },
+    @{ Name = "Python 3.13"; Id = "Python.Python.3.13"; Source = "winget" },
+    @{ Name = "Steam"; Id = "Valve.Steam"; Source = "winget" },
+    @{ Name = "Vim"; Id = "vim.vim"; Source = "winget" },
+    @{ Name = "VScode"; Id = "Microsoft.VisualStudioCode"; Source = "winget" },
+    @{ Name = "Cursor"; Id = "Anysphere.Cursor"; Source = "winget" },
+    @{ Name = "Yazi"; Id = "sxyazi.yazi"; Source = "winget" },
+    @{ Name = "AutoHotKey"; Id = "AutoHotkey.AutoHotkey"; Source = "winget" },
+    @{ Name = "Chromium"; Id = "Hibbiki.Chromium"; Source = "winget" },
+    @{ Name = "Neovim"; Id = "Neovim.Neovim"; Source = "winget" }
 )
 
 # -------------------------------------------------------------------------
@@ -387,6 +388,11 @@ $AppDefinitions = @(
                                     <CheckBox Name="Step8" Content="8. Merge Terminal Defaults"/>
                                     <CheckBox Name="Step9" Content="9. Neovim Config"/>
                                 </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                                    <Button Name="SelectAllStepsBtn" Content="Select All" Width="100" Margin="0,0,5,0"/>
+                                    <Button Name="DeselectAllStepsBtn" Content="Deselect All" Width="100"/>
+                                </StackPanel>
                                 
                                 <Separator Background="{DynamicResource ControlBorder}" Margin="0,15"/>
                                 <Button Name="RunSetupBtn" Style="{StaticResource PrimaryButton}" Content="Execute Selected Setup" HorizontalAlignment="Stretch"/>
@@ -511,7 +517,8 @@ try {
         "FetchReposBtn", "RepoListView", "CloneReposBtn",
         "ExportBtn", "ImportBtn", "BackupTheme", "BackupExplorer", "BackupMouse", "BackupProfile",
         "LogBox", "ThemeToggle", "RestartBtn",
-        "AppCheckPanel", "SelectAllAppsBtn", "DeselectAllAppsBtn", "InstallAppsBtn")
+        "AppCheckPanel", "SelectAllAppsBtn", "DeselectAllAppsBtn", "InstallAppsBtn",
+        "SelectAllStepsBtn", "DeselectAllStepsBtn")
     
     $gui = @{}
     foreach ($id in $controls) {
@@ -570,130 +577,146 @@ try {
     # ------------------
 
     $gui["SelectAllAppsBtn"].Add_Click({
-        foreach ($cb in $AppCheckboxes.Values) {
-            $cb.IsChecked = $true
-        }
-        Log "All apps selected."
-    })
+            foreach ($cb in $AppCheckboxes.Values) {
+                $cb.IsChecked = $true
+            }
+            Log "All apps selected."
+        })
 
     $gui["DeselectAllAppsBtn"].Add_Click({
-        foreach ($cb in $AppCheckboxes.Values) {
-            $cb.IsChecked = $false
-        }
-        Log "All apps deselected."
-    })
+            foreach ($cb in $AppCheckboxes.Values) {
+                $cb.IsChecked = $false
+            }
+            Log "All apps deselected."
+        })
 
     $gui["InstallAppsBtn"].Add_Click({
-        $selectedApps = @()
-        foreach ($app in $AppDefinitions) {
-            if ($AppCheckboxes[$app.Id].IsChecked) {
-                $selectedApps += $app
+            $selectedApps = @()
+            foreach ($app in $AppDefinitions) {
+                if ($AppCheckboxes[$app.Id].IsChecked) {
+                    $selectedApps += $app
+                }
             }
-        }
 
-        if ($selectedApps.Count -eq 0) {
-            Log "No apps selected for installation."
-            [System.Windows.MessageBox]::Show("No apps selected.", "Info")
-            return
-        }
+            if ($selectedApps.Count -eq 0) {
+                Log "No apps selected for installation."
+                [System.Windows.MessageBox]::Show("No apps selected.", "Info")
+                return
+            }
 
-        Log "Generating install script for $($selectedApps.Count) app(s)..."
+            Log "Generating install script for $($selectedApps.Count) app(s)..."
 
-        # Build WinGet install commands
-        $installCmds = @()
-        $appNames = @()
-        foreach ($app in $selectedApps) {
-            $installCmds += "cmd.exe /C winget.exe install --id `"$($app.Id)`" --exact --source $($app.Source) --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force"
-            $appNames += $app.Name
-        }
+            # Build WinGet install commands
+            $installCmds = @()
+            $appNames = @()
+            foreach ($app in $selectedApps) {
+                $installCmds += "cmd.exe /C winget.exe install --id `"$($app.Id)`" --exact --source $($app.Source) --accept-source-agreements --disable-interactivity --silent --accept-package-agreements --force"
+                $appNames += $app.Name
+            }
 
-        # Build script as array of lines
-        $lines = [System.Collections.ArrayList]::new()
-        [void]$lines.Add('Clear-Host')
-        [void]$lines.Add('Write-Host ""')
-        [void]$lines.Add('Write-Host "========================================================"')
-        [void]$lines.Add('Write-Host "        WinGet Package Installer (Selected Apps)"')
-        [void]$lines.Add('Write-Host "========================================================"')
-        [void]$lines.Add('Write-Host ""')
-        [void]$lines.Add('Write-Host "This script will install the following packages:"')
-        foreach ($name in $appNames) {
-            [void]$lines.Add("Write-Host `"  - $name`"")
-        }
-        [void]$lines.Add('Write-Host ""')
-        [void]$lines.Add('pause')
-        [void]$lines.Add('Clear-Host')
-        [void]$lines.Add('')
-        [void]$lines.Add('$success_count=0')
-        [void]$lines.Add('$failure_count=0')
-        [void]$lines.Add('$commands_run=0')
-        [void]$lines.Add('$results=""')
-        [void]$lines.Add('')
+            # Build script as array of lines
+            $lines = [System.Collections.ArrayList]::new()
+            [void]$lines.Add('Clear-Host')
+            [void]$lines.Add('Write-Host ""')
+            [void]$lines.Add('Write-Host "========================================================"')
+            [void]$lines.Add('Write-Host "        WinGet Package Installer (Selected Apps)"')
+            [void]$lines.Add('Write-Host "========================================================"')
+            [void]$lines.Add('Write-Host ""')
+            [void]$lines.Add('Write-Host "This script will install the following packages:"')
+            foreach ($name in $appNames) {
+                [void]$lines.Add("Write-Host `"  - $name`"")
+            }
+            [void]$lines.Add('Write-Host ""')
+            [void]$lines.Add('pause')
+            [void]$lines.Add('Clear-Host')
+            [void]$lines.Add('')
+            [void]$lines.Add('$success_count=0')
+            [void]$lines.Add('$failure_count=0')
+            [void]$lines.Add('$commands_run=0')
+            [void]$lines.Add('$results=""')
+            [void]$lines.Add('')
 
-        # Commands array
-        [void]$lines.Add('$commands = @(')
-        for ($i = 0; $i -lt $installCmds.Count; $i++) {
-            $sep = if ($i -lt $installCmds.Count - 1) { "," } else { "" }
-            [void]$lines.Add("    '$($installCmds[$i])'$sep")
-        }
-        [void]$lines.Add(')')
-        [void]$lines.Add('')
+            # Commands array
+            [void]$lines.Add('$commands = @(')
+            for ($i = 0; $i -lt $installCmds.Count; $i++) {
+                $sep = if ($i -lt $installCmds.Count - 1) { "," } else { "" }
+                [void]$lines.Add("    '$($installCmds[$i])'$sep")
+            }
+            [void]$lines.Add(')')
+            [void]$lines.Add('')
 
-        # Execution loop
-        [void]$lines.Add('foreach ($command in $commands) {')
-        [void]$lines.Add('    Write-Host "Running: $command" -ForegroundColor Yellow')
-        [void]$lines.Add('    cmd.exe /C $command')
-        [void]$lines.Add('    if ($LASTEXITCODE -eq 0) {')
-        [void]$lines.Add('        Write-Host "[  OK  ] $command" -ForegroundColor Green')
-        [void]$lines.Add('        $success_count++')
-        [void]$lines.Add('        $results += "$([char]0x1b)[32m[  OK  ] $command`n"')
-        [void]$lines.Add('    }')
-        [void]$lines.Add('    else {')
-        [void]$lines.Add('        Write-Host "[ FAIL ] $command" -ForegroundColor Red')
-        [void]$lines.Add('        $failure_count++')
-        [void]$lines.Add('        $results += "$([char]0x1b)[31m[ FAIL ] $command`n"')
-        [void]$lines.Add('    }')
-        [void]$lines.Add('    $commands_run++')
-        [void]$lines.Add('    Write-Host ""')
-        [void]$lines.Add('}')
-        [void]$lines.Add('')
+            # Execution loop
+            [void]$lines.Add('foreach ($command in $commands) {')
+            [void]$lines.Add('    Write-Host "Running: $command" -ForegroundColor Yellow')
+            [void]$lines.Add('    cmd.exe /C $command')
+            [void]$lines.Add('    if ($LASTEXITCODE -eq 0) {')
+            [void]$lines.Add('        Write-Host "[  OK  ] $command" -ForegroundColor Green')
+            [void]$lines.Add('        $success_count++')
+            [void]$lines.Add('        $results += "$([char]0x1b)[32m[  OK  ] $command`n"')
+            [void]$lines.Add('    }')
+            [void]$lines.Add('    else {')
+            [void]$lines.Add('        Write-Host "[ FAIL ] $command" -ForegroundColor Red')
+            [void]$lines.Add('        $failure_count++')
+            [void]$lines.Add('        $results += "$([char]0x1b)[31m[ FAIL ] $command`n"')
+            [void]$lines.Add('    }')
+            [void]$lines.Add('    $commands_run++')
+            [void]$lines.Add('    Write-Host ""')
+            [void]$lines.Add('}')
+            [void]$lines.Add('')
 
-        # Summary
-        [void]$lines.Add('Write-Host "========================================================"')
-        [void]$lines.Add('Write-Host "                  OPERATION SUMMARY"')
-        [void]$lines.Add('Write-Host "========================================================"')
-        [void]$lines.Add('Write-Host "Total commands run: $commands_run"')
-        [void]$lines.Add('Write-Host "Successful: $success_count"')
-        [void]$lines.Add('Write-Host "Failed: $failure_count"')
-        [void]$lines.Add('Write-Host ""')
-        [void]$lines.Add('Write-Host "Details:"')
-        [void]$lines.Add('Write-Host "$results$([char]0x1b)[37m"')
-        [void]$lines.Add('Write-Host "========================================================"')
-        [void]$lines.Add('')
-        [void]$lines.Add('if ($failure_count -gt 0) {')
-        [void]$lines.Add('    Write-Host "Some commands failed. Please check the log above." -ForegroundColor Yellow')
-        [void]$lines.Add('}')
-        [void]$lines.Add('else {')
-        [void]$lines.Add('    Write-Host "All commands executed successfully!" -ForegroundColor Green')
-        [void]$lines.Add('}')
-        [void]$lines.Add('Write-Host ""')
-        [void]$lines.Add('pause')
+            # Summary
+            [void]$lines.Add('Write-Host "========================================================"')
+            [void]$lines.Add('Write-Host "                  OPERATION SUMMARY"')
+            [void]$lines.Add('Write-Host "========================================================"')
+            [void]$lines.Add('Write-Host "Total commands run: $commands_run"')
+            [void]$lines.Add('Write-Host "Successful: $success_count"')
+            [void]$lines.Add('Write-Host "Failed: $failure_count"')
+            [void]$lines.Add('Write-Host ""')
+            [void]$lines.Add('Write-Host "Details:"')
+            [void]$lines.Add('Write-Host "$results$([char]0x1b)[37m"')
+            [void]$lines.Add('Write-Host "========================================================"')
+            [void]$lines.Add('')
+            [void]$lines.Add('if ($failure_count -gt 0) {')
+            [void]$lines.Add('    Write-Host "Some commands failed. Please check the log above." -ForegroundColor Yellow')
+            [void]$lines.Add('}')
+            [void]$lines.Add('else {')
+            [void]$lines.Add('    Write-Host "All commands executed successfully!" -ForegroundColor Green')
+            [void]$lines.Add('}')
+            [void]$lines.Add('Write-Host ""')
+            [void]$lines.Add('pause')
 
-        # Write to temp file
-        $tempScript = Join-Path $env:TEMP ("WinGetInstall_" + [Guid]::NewGuid() + ".ps1")
-        $lines | Out-File -FilePath $tempScript -Encoding UTF8
+            # Write to temp file
+            $tempScript = Join-Path $env:TEMP ("WinGetInstall_" + [Guid]::NewGuid() + ".ps1")
+            $lines | Out-File -FilePath $tempScript -Encoding UTF8
 
-        # Launch in non-admin PowerShell window via explorer.exe (de-elevate)
-        $tempBatch = Join-Path $env:TEMP ("WinGetInstall_" + [Guid]::NewGuid() + ".bat")
-        $batchCmd = "@echo off`r`npowershell -NoProfile -ExecutionPolicy Bypass -File `"$tempScript`""
-        Set-Content -Path $tempBatch -Value $batchCmd
-        Start-Process "explorer.exe" -ArgumentList "`"$tempBatch`""
+            # Launch in non-admin PowerShell window via explorer.exe (de-elevate)
+            $tempBatch = Join-Path $env:TEMP ("WinGetInstall_" + [Guid]::NewGuid() + ".bat")
+            $batchCmd = "@echo off`r`npowershell -NoProfile -ExecutionPolicy Bypass -File `"$tempScript`""
+            Set-Content -Path $tempBatch -Value $batchCmd
+            Start-Process "explorer.exe" -ArgumentList "`"$tempBatch`""
 
-        Log "Install script launched in new window for $($selectedApps.Count) app(s)."
-    })
+            Log "Install script launched in new window for $($selectedApps.Count) app(s)."
+        })
 
     # ------------------
     # TAB 2: SETUP
     # ------------------
+    $stepCheckboxes = @("Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9")
+
+    $gui["SelectAllStepsBtn"].Add_Click({
+            foreach ($id in $stepCheckboxes) {
+                $gui[$id].IsChecked = $true
+            }
+            Log "All setup steps selected."
+        })
+
+    $gui["DeselectAllStepsBtn"].Add_Click({
+            foreach ($id in $stepCheckboxes) {
+                $gui[$id].IsChecked = $false
+            }
+            Log "All setup steps deselected."
+        })
+
     $gui["RunSetupBtn"].Add_Click({
             if (-not (Test-Admin)) {
                 Log "WARNING: Not running as Administrator. Admin tools (Fonts, Links) may fail."
@@ -739,7 +762,8 @@ try {
                     try {
                         $statusCheck = gh auth status 2>&1
                         if ($statusCheck | Select-String "Logged in to") { $isLoggedIn = $true }
-                    } catch {
+                    }
+                    catch {
                         # Ignore error if simply not logged in
                     }
 
@@ -754,9 +778,10 @@ try {
                     try {
                         $null = gh auth status 2>&1
                         if ($LASTEXITCODE -eq 0) { $authSuccess = $true }
-                    } catch {
-                         # If it threw, it likely failed or is not logged in
-                         $authSuccess = $false
+                    }
+                    catch {
+                        # If it threw, it likely failed or is not logged in
+                        $authSuccess = $false
                     }
 
                     if ($authSuccess) { 
@@ -945,13 +970,14 @@ try {
                 try {
                     $null = gh auth status 2>&1 | Out-Null
                     if ($LASTEXITCODE -eq 0) { $authCheck = $true }
-                } catch {
+                }
+                catch {
                     $authCheck = $false
                 }
 
- 		if (-not $authCheck) { 
-    			throw "Not logged in to GitHub. Please run 'gh auth login' in a terminal window." 
-		}
+                if (-not $authCheck) { 
+                    throw "Not logged in to GitHub. Please run 'gh auth login' in a terminal window." 
+                }
 
                 # 2. Get Current User Name
                 $me = gh api user --jq .login 2>&1
@@ -1029,8 +1055,8 @@ try {
                 if ($gui["BackupProfile"].IsChecked) { $params["Profile"] = $true }
 
                 if ($params.Count -eq 0) {
-                     Log "No items selected for export."
-                     return
+                    Log "No items selected for export."
+                    return
                 }
 
                 # Construct command string for logging
@@ -1051,8 +1077,8 @@ try {
             if ($gui["BackupProfile"].IsChecked) { $params["Profile"] = $true }
 
             if ($params.Count -eq 0) {
-                 Log "No items selected for import."
-                 return
+                Log "No items selected for import."
+                return
             }
 
             $logStr = $params.Keys | ForEach-Object { "-$_" }
