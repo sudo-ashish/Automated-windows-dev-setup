@@ -10,7 +10,18 @@
   "settings": {
     "log_level": "INFO",
     "theme": "Dark",
-    "backup_dir": "system-backup"
+    "backup_dir": "system-backup",
+    "user": {
+      "name": "User Name",
+      "email": "user@email.com"
+    },
+    "setup": {
+      "git_config": true,
+      "install_tools": true,
+      "fonts": true,
+      "terminal_defaults": true,
+      "editor_configs": true
+    }
   },
   "modules": {
     "debloat": {
@@ -19,7 +30,12 @@
       "windows_feature_cleanup": false
     },
     "software": {
-      "installer": "winget"
+      "installer": "winget",
+      "default_apps": [
+        "Microsoft.PowerShell",
+        "Fastfetch-cli.Fastfetch",
+        "Git.Git"
+      ]
     }
   }
 }

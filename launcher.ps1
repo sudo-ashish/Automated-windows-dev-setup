@@ -19,6 +19,7 @@
 param(
     [switch]$Software,
     [switch]$Backup,
+    [switch]$Restore,
     [switch]$Setup,
     [switch]$Debloat,
     [switch]$All,
@@ -53,7 +54,7 @@ if ($All) {
 }
 else {
     if ($Software) { $ModulesToRun += "Installers" }
-    if ($Backup) { $ModulesToRun += "Backups" }
+    if ($Backup -or $Restore) { $ModulesToRun += "Backups" }
     if ($Setup) { $ModulesToRun += "Setup" }
     if ($Debloat) { $ModulesToRun += "Debloater" }
 }
@@ -63,8 +64,19 @@ if ($ModulesToRun.Count -gt 0) {
     foreach ($ModuleName in $ModulesToRun) {
         $ModulePath = Join-Path $AppRoot "src/modules/$ModuleName.ps1"
         if (Test-Path $ModulePath) {
-            Write-Log "Executing module: $ModuleName" -Level INFO
+            Write-Log "Loading module: $ModuleName" -Level INFO
             . $ModulePath
+            
+            # Execute the primary function of the module
+            switch ($ModuleName) {
+                "Installers" { Invoke-AppInstall }
+                "Backups" { 
+                    if ($Restore) { Invoke-Restore -All }
+                    else { Invoke-Backup -All }
+                }
+                "Setup" { Invoke-Setup }
+                "Debloater" { Invoke-Debloat }
+            }
         }
         else {
             # For Phase 1, create placeholders if missing
