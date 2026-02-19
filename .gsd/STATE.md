@@ -8,4 +8,7 @@ Project "winHelp Refactor" initialized.
 - Infrastructure (.gsd files) set up.
 
 ## Current Phase
-Phase 0: Project Initialized (Ready for /plan 1)
+Phase 1: Foundation & Core Logic (Planned)
+
+## Next Steps
+1. /execute 1
