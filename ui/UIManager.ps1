@@ -155,16 +155,16 @@ function Invoke-GUI {
 
         # Tab: Backup
         $Global:UIElements["ExportBtn"].Add_Click({
-                Invoke-Backup -Theme $Global:UIElements["BackupTheme"].IsChecked `
-                    -Explorer $Global:UIElements["BackupExplorer"].IsChecked `
-                    -Mouse $Global:UIElements["BackupMouse"].IsChecked `
-                    -PSProfile $Global:UIElements["BackupProfile"].IsChecked
+                Invoke-Backup -Theme:$Global:UIElements["BackupTheme"].IsChecked `
+                    -Explorer:$Global:UIElements["BackupExplorer"].IsChecked `
+                    -Mouse:$Global:UIElements["BackupMouse"].IsChecked `
+                    -PSProfile:$Global:UIElements["BackupProfile"].IsChecked
             })
         $Global:UIElements["ImportBtn"].Add_Click({
-                Invoke-Restore -Theme $Global:UIElements["BackupTheme"].IsChecked `
-                    -Explorer $Global:UIElements["BackupExplorer"].IsChecked `
-                    -Mouse $Global:UIElements["BackupMouse"].IsChecked `
-                    -PSProfile $Global:UIElements["BackupProfile"].IsChecked
+                Invoke-Restore -Theme:$Global:UIElements["BackupTheme"].IsChecked `
+                    -Explorer:$Global:UIElements["BackupExplorer"].IsChecked `
+                    -Mouse:$Global:UIElements["BackupMouse"].IsChecked `
+                    -PSProfile:$Global:UIElements["BackupProfile"].IsChecked
             })
 
         # Tab: Debloat
