@@ -42,10 +42,11 @@ Customize your setup by editing `config.json`. You can define:
 ## 📂 Project Structure
 - `launcher.ps1`: The central orchestrator.
 - `config.json`: Master configuration file.
-- `src/core/`: Internal engine (Logger, Config loader).
-- `src/modules/`: Independent task modules (Installers, Backups, Setup, Debloater, etc).
-- `src/ui/`: WPF GUI definition and manager.
-- `logs/`: timestamped execution logs.
+- `assets/`: Static dependencies, terminal defaults, and external IDE extensions backups.
+- `core/`: Internal engine (Logger, Config loader).
+- `modules/`: Independent task modules (Installers, Backups, Setup, Debloater, etc).
+- `ui/`: WPF GUI definition and manager.
+- `build/logs/`: Timestamped execution logs.
 
 ---
 

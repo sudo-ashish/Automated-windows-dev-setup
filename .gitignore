@@ -1,0 +1,21 @@
+# AI & Workflows
+.gsd/
+.agent/
+.gemini/
+.antigravity/
+
+# Logs
+logs/
+*.log
+
+# Temp & Artifacts
+temp/
+tmp/
+task.md
+implementation_plan.md
+setup_legacy.ps1.bak
+tweak.txt
+
+# OS Junk
+.DS_Store
+Thumbs.db

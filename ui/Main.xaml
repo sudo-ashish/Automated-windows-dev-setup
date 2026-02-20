@@ -1,7 +1,11 @@
 ﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Automated Windows Dev Setup" Height="900" Width="1200" ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
         Background="{DynamicResource WindowBackground}" Foreground="{DynamicResource TextPrimary}" FontFamily="Segoe UI">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="40" GlassFrameThickness="0" ResizeBorderThickness="5" UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
     <Window.Resources>
         <!-- Initial Colors (Dark Theme Default) -->
         <SolidColorBrush x:Key="WindowBackground" Color="#1E1E1E"/>
@@ -227,14 +231,16 @@
         </Grid.RowDefinitions>
 
         <!-- Header / Toggle -->
-        <Grid Grid.Row="0" Margin="0,0,10,0" Panel.ZIndex="1000">
-             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,10,0">
-                <Button Name="RestartBtn" Content="Reload Script" FontSize="10" Padding="5,2" Margin="0,0,10,0" Height="25" Background="Transparent" Foreground="{DynamicResource TextSecondary}" BorderThickness="1"/>
-                <ToggleButton Name="ThemeToggle" Style="{StaticResource ThemeToggleStyle}" IsChecked="True" ToolTip="Toggle Theme"/> 
+        <Grid Grid.Row="0" Name="TitleBar" Background="{DynamicResource WindowBackground}" Panel.ZIndex="1000">
+             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,10,5">
+                <Button Name="ClearAllBtn" Content="Clear All" FontSize="10" Padding="5,2" Margin="0,0,10,0" Height="25" Background="Transparent" Foreground="{DynamicResource TextSecondary}" BorderThickness="1" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button Name="RestartBtn" Content="Reload Script" FontSize="10" Padding="5,2" Margin="0,0,10,0" Height="25" Background="Transparent" Foreground="{DynamicResource TextSecondary}" BorderThickness="1" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <ToggleButton Name="ThemeToggle" Style="{StaticResource ThemeToggleStyle}" IsChecked="True" ToolTip="Toggle Theme" WindowChrome.IsHitTestVisibleInChrome="True"/> 
+                <Button Name="CloseBtn" Content="✕" FontSize="14" FontWeight="Bold" Width="30" Height="25" Margin="10,0,0,0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextPrimary}" WindowChrome.IsHitTestVisibleInChrome="True" Cursor="Hand" ToolTip="Close"/>
             </StackPanel>
         </Grid>
 
-        <TabControl Grid.Row="1" Margin="0,-35,0,0" Panel.ZIndex="1">
+        <TabControl Grid.Row="1" Margin="0,0,0,0" Panel.ZIndex="1">
             <!-- TAB 1: SOFTWARE -->
             <TabItem Header="Software">
                 <Grid Margin="15">
@@ -248,7 +254,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Select Applications to Install" FontSize="15" Foreground="{DynamicResource AccentColor}" VerticalAlignment="Center" Margin="0,0,15,0"/>
                             <Button Name="SelectAllAppsBtn" Content="Select All" Width="100" Margin="0,0,5,0"/>
-                            <Button Name="DeselectAllAppsBtn" Content="Deselect All" Width="100"/>
+                            <Button Name="DeselectAllAppsBtn" Content="Clear" Width="100"/>
                         </StackPanel>
                     </Border>
 
@@ -331,7 +337,7 @@
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
                                     <Button Name="SelectAllStepsBtn" Content="Select All" Width="100" Margin="0,0,5,0"/>
-                                    <Button Name="DeselectAllStepsBtn" Content="Deselect All" Width="100"/>
+                                    <Button Name="DeselectAllStepsBtn" Content="Clear" Width="100"/>
                                 </StackPanel>
                                 
                                 <Separator Background="{DynamicResource ControlBorder}" Margin="0,15"/>
@@ -390,10 +396,10 @@
                                 <Label Content="System Settings Backup" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="{DynamicResource AccentColor}"/>
                                 
                                 <StackPanel Orientation="Vertical" Margin="0,0,0,20" HorizontalAlignment="Center">
-                                    <CheckBox Name="BackupTheme" Content="Theme &amp; Personalization" IsChecked="True"/>
-                                    <CheckBox Name="BackupExplorer" Content="Explorer &amp; Search" IsChecked="True"/>
-                                    <CheckBox Name="BackupMouse" Content="Mouse &amp; Touchpad" IsChecked="True"/>
-                                    <CheckBox Name="BackupProfile" Content="PowerShell Profile" IsChecked="True"/>
+                                    <CheckBox Name="BackupTheme" Content="Theme &amp; Personalization"/>
+                                    <CheckBox Name="BackupExplorer" Content="Explorer &amp; Search"/>
+                                    <CheckBox Name="BackupMouse" Content="Mouse &amp; Touchpad"/>
+                                    <CheckBox Name="BackupProfile" Content="PowerShell Profile"/>
                                 </StackPanel>
 
                                 <Button Name="ExportBtn" Content="Export Selected (Backup)" Width="280" Height="40" Margin="0,0,0,10"/>
@@ -416,9 +422,9 @@
                                 <Label Content="Windows Debloater" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="{DynamicResource AccentColor}"/>
                                 
                                 <StackPanel Margin="0,0,0,20">
-                                    <CheckBox Name="DebloatTelemetry" Content="Disable Telemetry &amp; Data Collection" IsChecked="True"/>
-                                    <CheckBox Name="DebloatApps" Content="Remove Preinstalled Bloatware Apps" IsChecked="True"/>
-                                    <CheckBox Name="DebloatBing" Content="Disable Bing Search in Start Menu" IsChecked="True"/>
+                                    <CheckBox Name="DebloatTelemetry" Content="Disable Telemetry &amp; Data Collection"/>
+                                    <CheckBox Name="DebloatApps" Content="Remove Preinstalled Bloatware Apps"/>
+                                    <CheckBox Name="DebloatBing" Content="Disable Bing Search in Start Menu"/>
                                 </StackPanel>
 
                                 <Button Name="RunDebloatBtn" Style="{StaticResource PrimaryButton}" Content="Run Debloater" Height="45"/>
@@ -431,7 +437,7 @@
         </TabControl>
 
         <!-- Log Console Area -->
-        <Border Grid.Row="2" BorderBrush="{DynamicResource AccentColor}" BorderThickness="0,1,0,0" Background="Black">
+        <Border Grid.Row="2" Visibility="Collapsed" BorderBrush="{DynamicResource AccentColor}" BorderThickness="0,1,0,0" Background="Black">
             <TextBox Name="LogBox" IsReadOnly="True" Background="#0F0F0F" Foreground="#00FF00" FontFamily="Consolas" FontSize="13" 
                      VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" BorderThickness="0" Padding="8"/>
         </Border>

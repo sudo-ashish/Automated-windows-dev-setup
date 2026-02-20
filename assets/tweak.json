@@ -1,0 +1,199 @@
+[
+    {
+        "id": "WPFTweaksDeleteTempFiles",
+        "content": "Delete Temporary Files",
+        "description": "Erases TEMP Folders",
+        "category": "Essential Tweaks",
+        "panel": "1",
+        "invokeScript": [
+            "Remove-Item -Path \"$Env:Temp\\*\" -Recurse -Force -ErrorAction SilentlyContinue",
+            "Remove-Item -Path \"$Env:SystemRoot\\Temp\\*\" -Recurse -Force -ErrorAction SilentlyContinue"
+        ]
+    },
+    {
+        "id": "WPFTweaksPowershell7Tele",
+        "content": "Disable Powershell 7 Telemetry",
+        "description": "This will create an Environment Variable called 'POWERSHELL_TELEMETRY_OPTOUT' with a value of '1' which will tell Powershell 7 to not send Telemetry Data.",
+        "category": "Essential Tweaks",
+        "panel": "1",
+        "invokeScript": [
+            "[Environment]::SetEnvironmentVariable('POWERSHELL_TELEMETRY_OPTOUT', '1', 'Machine')"
+        ],
+        "undoScript": [
+            "[Environment]::SetEnvironmentVariable('POWERSHELL_TELEMETRY_OPTOUT', '', 'Machine')"
+        ]
+    },
+    {
+        "id": "WPFTweaksTelemetry",
+        "content": "Disable Telemetry",
+        "description": "Disables Microsoft Telemetry...Duh",
+        "category": "Essential Tweaks",
+        "panel": "1",
+        "registry": [
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+                "Name": "Enabled",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+                "Name": "TailoredExperiencesWithDiagnosticDataEnabled",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy",
+                "Name": "HasAccepted",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\Input\\TIPC",
+                "Name": "Enabled",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\InputPersonalization",
+                "Name": "RestrictImplicitInkCollection",
+                "Value": "1",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\InputPersonalization",
+                "Name": "RestrictImplicitTextCollection",
+                "Value": "1",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\InputPersonalization\\TrainedDataStore",
+                "Name": "HarvestContacts",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\Personalization\\Settings",
+                "Name": "AcceptedPrivacyPolicy",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+                "Name": "AllowTelemetry",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                "Name": "Start_TrackProgs",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                "Name": "PublishUserActivities",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKCU:\\Software\\Microsoft\\Siuf\\Rules",
+                "Name": "NumberOfSIUFInPeriod",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            }
+        ],
+        "invokeScript": [
+            "Set-MpPreference -SubmitSamplesConsent 2 -ErrorAction SilentlyContinue",
+            "Set-Service -Name diagtrack -StartupType Disabled -ErrorAction SilentlyContinue",
+            "Set-Service -Name wermgr -StartupType Disabled -ErrorAction SilentlyContinue",
+            "$Memory = (Get-CimInstance Win32_PhysicalMemory | Measure-Object Capacity -Sum).Sum / 1KB",
+            "Set-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Control\" -Name SvcHostSplitThresholdInKB -Value $Memory -ErrorAction SilentlyContinue",
+            "Remove-ItemProperty -Path \"HKCU:\\Software\\Microsoft\\Siuf\\Rules\" -Name PeriodInNanoSeconds -ErrorAction SilentlyContinue"
+        ],
+        "undoScript": [
+            "Set-MpPreference -SubmitSamplesConsent 1",
+            "Set-Service -Name diagtrack -StartupType Automatic",
+            "Set-Service -Name wermgr -StartupType Automatic"
+        ]
+    },
+    {
+        "id": "WPFTweaksLocation",
+        "content": "Disable Location Tracking",
+        "description": "Disables Location Tracking...DUH!",
+        "category": "Essential Tweaks",
+        "panel": "1",
+        "registry": [
+            {
+                "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location",
+                "Name": "Value",
+                "Value": "Deny",
+                "Type": "String",
+                "OriginalValue": "Allow"
+            },
+            {
+                "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Sensor\\Overrides\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}",
+                "Name": "SensorPermissionState",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "1"
+            },
+            {
+                "Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\lfsvc\\Service\\Configuration",
+                "Name": "Status",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "1"
+            },
+            {
+                "Path": "HKLM:\\SYSTEM\\Maps",
+                "Name": "AutoUpdateEnabled",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "1"
+            }
+        ]
+    },
+    {
+        "id": "WPFTweaksActivity",
+        "content": "Disable Activity History",
+        "description": "This erases recent docs, clipboard, and run history.",
+        "category": "Essential Tweaks",
+        "panel": "1",
+        "registry": [
+            {
+                "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                "Name": "EnableActivityFeed",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                "Name": "PublishUserActivities",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            },
+            {
+                "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                "Name": "UploadUserActivities",
+                "Value": "0",
+                "Type": "DWord",
+                "OriginalValue": "<RemoveEntry>"
+            }
+        ]
+    }
+]

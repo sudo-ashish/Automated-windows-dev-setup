@@ -49,7 +49,7 @@ function Set-TerminalDefaults {
     Write-Log "Merging Terminal Defaults..." -Level INFO
     try {
         $settingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-        $defaultsPath = Join-Path $AppRoot "ui/wt-defaults.json"
+        $defaultsPath = Join-Path $AppRoot "assets/wt-defaults.json"
 
         if (Test-Path $settingsPath) {
             if (Test-Path $defaultsPath) {
@@ -88,14 +88,14 @@ function Sync-EditorSettings {
     Write-Log "Syncing Editor Settings..." -Level INFO
     
     # Neovim
-    $nvSrc = Join-Path $AppRoot "modules/configs/nvim"
+    $nvSrc = Join-Path $AppRoot "assets/deps/nvim"
     if (Test-Path $nvSrc) {
         Write-Log "Copying Neovim config..." -Level INFO
         Copy-Item -Path $nvSrc -Destination "$env:LOCALAPPDATA\nvim" -Recurse -Force
     }
 
     # VSCodium
-    $codiumSrc = Join-Path $AppRoot "codium-bak/settings.json"
+    $codiumSrc = Join-Path $AppRoot "assets/deps/codium/settings.json"
     if (Test-Path $codiumSrc) {
         $dest = "$env:APPDATA\VSCodium\User\settings.json"
         $destDir = Split-Path $dest
@@ -105,7 +105,7 @@ function Sync-EditorSettings {
     }
 
     # Antigravity
-    $antiSrc = Join-Path $AppRoot "antigravity-bak/settings.json"
+    $antiSrc = Join-Path $AppRoot "assets/deps/antigravity/settings.json"
     if (Test-Path $antiSrc) {
         $dest = "$env:APPDATA\Antigravity\User\settings.json"
         $destDir = Split-Path $dest

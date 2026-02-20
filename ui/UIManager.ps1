@@ -24,7 +24,7 @@ function Invoke-GUI {
             "RunSetupBtn", 
             "FetchReposBtn", "RepoListView", "CloneReposBtn",
             "ExportBtn", "ImportBtn", "BackupTheme", "BackupExplorer", "BackupMouse", "BackupProfile",
-            "LogBox", "ThemeToggle", "RestartBtn",
+            "LogBox", "ThemeToggle", "RestartBtn", "ClearAllBtn", "TitleBar", "CloseBtn",
             "AppCheckPanel", "SelectAllAppsBtn", "DeselectAllAppsBtn", "InstallAppsBtn",
             "SelectAllStepsBtn", "DeselectAllStepsBtn",
             "DebloatTelemetry", "DebloatApps", "DebloatBing", "RunDebloatBtn"
@@ -52,6 +52,36 @@ function Invoke-GUI {
         }
 
         # --- Event Handlers ---
+
+        # Title / Header
+        $Global:UIElements["TitleBar"].Add_MouseLeftButtonDown({
+                if ($_.ClickCount -eq 2) {
+                    if ($Global:Window.WindowState -eq "Maximized") {
+                        $Global:Window.WindowState = "Normal"
+                    }
+                    else {
+                        $Global:Window.WindowState = "Maximized"
+                    }
+                }
+                else {
+                    $Global:Window.DragMove()
+                }
+            })
+        $Global:UIElements["CloseBtn"].Add_Click({
+                Write-Log "Closing GUI..." -Level INFO
+                $Global:Window.Close()
+            })
+
+        $Global:UIElements["ClearAllBtn"].Add_Click({
+                Write-Log "Clearing all UI checkboxes..." -Level INFO
+                foreach ($key in $Global:UIElements.Keys) {
+                    $ctrl = $Global:UIElements[$key]
+                    if ($null -eq $ctrl) { continue }
+                    if ($ctrl.GetType().Name -eq "CheckBox") {
+                        $ctrl.IsChecked = $false
+                    }
+                }
+            })
 
         # Tab: Software
         $Global:UIElements["SelectAllAppsBtn"].Add_Click({ 
@@ -140,14 +170,19 @@ function Invoke-GUI {
         # Tab: Debloat
         $Global:UIElements["RunDebloatBtn"].Add_Click({
                 # Temporary override config for UI call
-                $orig = $Global:Config.modules.debloat.Clone()
+                $origTelemetry = $Global:Config.modules.debloat.telemetry_disable
+                $origApps = $Global:Config.modules.debloat.bloatware_removal
+                $origBing = $Global:Config.modules.debloat.bing_search_disable
+                
                 $Global:Config.modules.debloat.telemetry_disable = $Global:UIElements["DebloatTelemetry"].IsChecked
                 $Global:Config.modules.debloat.bloatware_removal = $Global:UIElements["DebloatApps"].IsChecked
                 $Global:Config.modules.debloat.bing_search_disable = $Global:UIElements["DebloatBing"].IsChecked
             
                 Invoke-Debloat
             
-                $Global:Config.modules.debloat = $orig
+                $Global:Config.modules.debloat.telemetry_disable = $origTelemetry
+                $Global:Config.modules.debloat.bloatware_removal = $origApps
+                $Global:Config.modules.debloat.bing_search_disable = $origBing
             })
 
         # Global
