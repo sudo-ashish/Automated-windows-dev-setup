@@ -1,21 +1,30 @@
-# AI & Workflows
+# AI & Agentic Workflows
+# Ignored to prevent committing AI configuration, context, and dynamic states
 .gsd/
 .agent/
 .gemini/
 .antigravity/
+.ai/
 
 # Logs
+# Prevent massive log files from cluttering the repo history
 logs/
 *.log
 
 # Temp & Artifacts
+# Ephemeral build or execution directories
 temp/
 tmp/
+cache/
+
+# Agent execution summaries
 task.md
 implementation_plan.md
-setup_legacy.ps1.bak
-tweak.txt
 
-# OS Junk
+# OS / Editor / Junk
+# Temporary editor files and system thumbnails
+*.bak
+*.tmp
+*.swp
 .DS_Store
 Thumbs.db
