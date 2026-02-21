@@ -57,7 +57,9 @@
           "pkief.material-product-icons",
           "ms-python.python"
         ],
-        "antigravity": []
+        "antigravity": [
+          "beardedbear.beardedtheme"
+        ]
       }
     }
   }
