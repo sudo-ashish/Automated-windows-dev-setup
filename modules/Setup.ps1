@@ -45,6 +45,40 @@ function Install-NerdFont {
     }
 }
 
+function Install-IdeExtensions {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ActiveIde
+    )
+
+    Write-Log "Installing extensions for IDE: $ActiveIde" -Level INFO
+    $extensions = $Global:Config.modules.ide.extensions.$ActiveIde
+
+    if (-not $extensions -or $extensions.Count -eq 0) {
+        Write-Log "No extensions defined or enabled for $ActiveIde." -Level INFO
+        return
+    }
+
+    $binMap = @{
+        "vscodium" = "codium"
+        "antigravity" = "code" # Update with actual antigravity binary name if different
+        "vscode" = "code"
+    }
+
+    $bin = if ($binMap.ContainsKey($ActiveIde.ToLower())) { $binMap[$ActiveIde.ToLower()] } else { $ActiveIde }
+
+    if (-not (Get-Command $bin -ErrorAction SilentlyContinue)) {
+        Write-Log "Target IDE binary '$bin' not found in PATH. Skipping extensions." -Level WARN
+        return
+    }
+
+    foreach ($ext in $extensions) {
+        Write-Log "Installing $ActiveIde extension: $ext" -Level DEBUG
+        Start-Process $bin -ArgumentList "--install-extension `"$ext`" --force" -Wait -NoNewWindow
+    }
+    Write-Log "Extension installation for $ActiveIde complete." -Level INFO
+}
+
 function Set-TerminalDefaults {
     Write-Log "Merging Terminal Defaults..." -Level INFO
     try {

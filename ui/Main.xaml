@@ -323,14 +323,32 @@
                         <Border Grid.Column="1" Background="{DynamicResource ControlBackground}" CornerRadius="4" Padding="10">
                             <StackPanel>
                                 <Label Content="Environment Config" FontSize="15" Margin="0,0,0,10" Foreground="{DynamicResource AccentColor}"/>
+                                
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="Target IDE:" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                                    <ComboBox Grid.Column="1" Name="IdeSelector" Margin="10,0,0,0">
+                                        <ComboBoxItem Content="Select an IDE..."/>
+                                        <!-- Will be populated dynamically by UIManager -->
+                                    </ComboBox>
+                                </Grid>
+                                
                                 <StackPanel>
                                     <CheckBox Name="Step2a" Content="2a. Git Config &amp; Tools (GH CLI, FZF)"/>
                                     <CheckBox Name="Step2b" Content="2b. GitHub Auth Login"/>
                                     <CheckBox Name="Step3" Content="3. Install Selected Nerd Font"/>
-                                    <CheckBox Name="Step4" Content="4. VSCodium Extensions"/>
-                                    <CheckBox Name="Step5" Content="5. VSCodium Settings"/>
-                                    <CheckBox Name="Step6" Content="6. Antigravity Extensions"/>
-                                    <CheckBox Name="Step7" Content="7. Antigravity Settings"/>
+                                    
+                                    <Border BorderBrush="{DynamicResource ControlBorder}" BorderThickness="1" CornerRadius="4" Margin="0,10,0,10" Padding="5">
+                                        <StackPanel Name="DynamicExtensionPanel" Visibility="Collapsed">
+                                            <Label Content="IDE Extensions" FontWeight="SemiBold" Foreground="{DynamicResource AccentColor}" Margin="0,0,0,5"/>
+                                            <WrapPanel Name="ExtensionCheckPanel"/>
+                                        </StackPanel>
+                                    </Border>
+                                    
+                                    <CheckBox Name="Step5" Content="5. IDE Settings Sync (Codium/Anti)"/>
                                     <CheckBox Name="Step8" Content="8. Merge Terminal Defaults"/>
                                     <CheckBox Name="Step9" Content="9. Neovim Config"/>
                                 </StackPanel>

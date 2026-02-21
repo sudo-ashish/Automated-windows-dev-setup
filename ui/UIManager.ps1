@@ -20,7 +20,8 @@ function Invoke-GUI {
         # Locate Controls
         $controls = @(
             "GitNameBox", "GitEmailBox", "FontSelector", 
-            "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9",
+            "Step2a", "Step2b", "Step3", "Step5", "Step8", "Step9",
+            "IdeSelector", "DynamicExtensionPanel", "ExtensionCheckPanel",
             "RunSetupBtn", 
             "FetchReposBtn", "RepoListView", "CloneReposBtn",
             "ExportBtn", "ImportBtn", "BackupTheme", "BackupExplorer", "BackupMouse", "BackupProfile",
@@ -38,6 +39,14 @@ function Invoke-GUI {
 
         # Set Global LogBox for Logger.ps1
         $Global:UILogBox = $Global:UIElements["LogBox"]
+
+        # Populate IDE Selector
+        $ideList = $Global:Config.modules.ide.extensions.PSObject.Properties | Select-Object -ExpandProperty Name
+        foreach ($ide in $ideList) {
+            $cbi = New-Object System.Windows.Controls.ComboBoxItem
+            $cbi.Content = $ide
+            $Global:UIElements["IdeSelector"].Items.Add($cbi) | Out-Null
+        }
 
         # Dynamically create app checkboxes
         if ($Global:AppDefinitions) {
@@ -102,11 +111,40 @@ function Invoke-GUI {
 
         # Tab: Setup
         $Global:UIElements["SelectAllStepsBtn"].Add_Click({
-                "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9" | ForEach-Object { $Global:UIElements[$_].IsChecked = $true }
+                "Step2a", "Step2b", "Step3", "Step5", "Step8", "Step9" | ForEach-Object { $Global:UIElements[$_].IsChecked = $true }
+                foreach ($child in $Global:UIElements["ExtensionCheckPanel"].Children) {
+                    if ($child.GetType().Name -eq "CheckBox") { $child.IsChecked = $true }
+                }
             })
         $Global:UIElements["DeselectAllStepsBtn"].Add_Click({
-                "Step2a", "Step2b", "Step3", "Step4", "Step5", "Step6", "Step7", "Step8", "Step9" | ForEach-Object { $Global:UIElements[$_].IsChecked = $false }
+                "Step2a", "Step2b", "Step3", "Step5", "Step8", "Step9" | ForEach-Object { $Global:UIElements[$_].IsChecked = $false }
+                foreach ($child in $Global:UIElements["ExtensionCheckPanel"].Children) {
+                    if ($child.GetType().Name -eq "CheckBox") { $child.IsChecked = $false }
+                }
             })
+            
+        $Global:UIElements["IdeSelector"].Add_SelectionChanged({
+            $selectedIdx = $Global:UIElements["IdeSelector"].SelectedIndex
+            if ($selectedIdx -gt 0) {
+                $ideName = $Global:UIElements["IdeSelector"].Items[$selectedIdx].Content
+                $Global:UIElements["DynamicExtensionPanel"].Visibility = "Visible"
+                $Global:UIElements["ExtensionCheckPanel"].Children.Clear()
+                
+                $extensions = $Global:Config.modules.ide.extensions.$ideName
+                if ($extensions) {
+                    foreach ($ext in $extensions) {
+                        $cb = New-Object System.Windows.Controls.CheckBox
+                        $cb.Content = $ext
+                        $cb.IsChecked = $true 
+                        $Global:UIElements["ExtensionCheckPanel"].Children.Add($cb) | Out-Null
+                    }
+                }
+            } else {
+                $Global:UIElements["DynamicExtensionPanel"].Visibility = "Collapsed"
+                $Global:UIElements["ExtensionCheckPanel"].Children.Clear()
+            }
+        })
+
         $Global:UIElements["RunSetupBtn"].Add_Click({
                 Write-Log "Running selected setup tasks..." -Level INFO
             
@@ -117,7 +155,25 @@ function Invoke-GUI {
                 if ($Global:UIElements["Step2a"].IsChecked) { Set-GitConfig; Install-Tools }
                 if ($Global:UIElements["Step2b"].IsChecked) { Start-Process "gh" -ArgumentList "auth login" -Wait }
                 if ($Global:UIElements["Step3"].IsChecked) { Install-NerdFont } # Note: Need to pass Selector value if possible
-                if ($Global:UIElements["Step4"].IsChecked -or $Global:UIElements["Step5"].IsChecked -or $Global:UIElements["Step6"].IsChecked -or $Global:UIElements["Step7"].IsChecked -or $Global:UIElements["Step9"].IsChecked) {
+                
+                $selectedIdx = $Global:UIElements["IdeSelector"].SelectedIndex
+                if ($selectedIdx -gt 0) {
+                    $ideName = $Global:UIElements["IdeSelector"].Items[$selectedIdx].Content
+                    $enabledExts = @()
+                    foreach ($child in $Global:UIElements["ExtensionCheckPanel"].Children) {
+                        if ($child.GetType().Name -eq "CheckBox" -and $child.IsChecked) {
+                            $enabledExts += $child.Content
+                        }
+                    }
+                    if ($enabledExts.Count -gt 0) {
+                        # Write selections back to config and trigger install
+                        $Global:Config.modules.ide.extensions.$ideName = $enabledExts
+                        Save-Config
+                        Install-IdeExtensions -ActiveIde $ideName
+                    }
+                }
+
+                if ($Global:UIElements["Step5"].IsChecked -or $Global:UIElements["Step9"].IsChecked) {
                     Sync-EditorSettings
                 }
                 if ($Global:UIElements["Step8"].IsChecked) { Set-TerminalDefaults }
