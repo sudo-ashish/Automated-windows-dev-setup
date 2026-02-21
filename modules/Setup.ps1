@@ -61,7 +61,7 @@ function Install-IdeExtensions {
 
     $binMap = @{
         "vscodium" = "codium"
-        "antigravity" = "code" # Update with actual antigravity binary name if different
+        "antigravity" = "antigravity"
         "vscode" = "code"
     }
 
